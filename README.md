@@ -1,1 +1,63 @@
-Documentation Initial
+﻿# 🖥️ Gestion de Base de Données – C# Windows Forms + SQL Server
+
+Une application Windows Forms développée en **C# (.NET)** permettant de gérer des données stockées dans une base **SQL Server**.  
+Le projet inclut des fonctionnalités de connexion, d’ajout, de modification et de suppression d’enregistrements.
+
+---
+
+## 🚀 Installation
+
+### 1. Cloner le projet
+
+git clone https://github.com/maucasoli/TP1-420-DB.git
+
+### 2. Ouvrir dans Visual Studio
+
+Lance Visual Studio
+
+Clique sur "Ouvrir un projet ou une solution"
+
+Sélectionne le fichier .sln du projet
+
+### 3. Configurer la base de données SQL Server
+
+Crée une base de données SQL Server (ex: gestion_db)
+
+Mets à jour la chaîne de connexion dans ton code :
+
+string connectionString = "server=localhost;database=gestion_db;uid={username};pwd={password};";
+
+## ▶️ Utilisation
+
+Lance l’application depuis Visual Studio (Ctrl + F5)
+
+Connecte-toi à la base de données
+
+Ajoute, modifie ou supprime des enregistrements via l’interface graphique
+
+## 🧩 Structure du projet
+
+TODO
+
+## 🛠️ Technologies utilisées
+
+C# (.NET Framework / .NET 8+)
+
+Windows Forms
+
+SQL Server
+
+SQL Server Management Studio 21
+
+ADO.NET
+
+## 📧 Auteur
+
+Jean Guyot
+💻 GitHub : @GuyotJean
+
+Mauricio Oliveira
+💻 GitHub : @maucasoli
+
+Youssef Moinou
+💻 GitHub : @derssa
