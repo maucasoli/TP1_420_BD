@@ -37,6 +37,7 @@ Ajoute, modifie ou supprime des enregistrements via l’interface graphique
 
 ## 🧩 Structure du projet
 
+/TP1_420_BD
 TODO
 
 ## 🛠️ Technologies utilisées
