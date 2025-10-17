@@ -1,6 +1,7 @@
-using System.Data;
-using System.Windows.Forms;
+﻿using System.Data;
 using System.Drawing;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using DotNetEnv;
 using Microsoft.Data.SqlClient;
 using TP1_420_BD.Models;
@@ -69,47 +70,143 @@ namespace TP1_420_BD
 
         private Client? GetInfoClient()
         {
-            Form dialog = new Form();
-            dialog.Text = "Add Client";
-            dialog.Size = new Size(300, 250);
-            dialog.StartPosition = FormStartPosition.CenterParent;
-            dialog.FormBorderStyle = FormBorderStyle.FixedDialog;
-            dialog.MaximizeBox = false;
-            dialog.MinimizeBox = false;
-            dialog.ShowIcon = false;
+            Form dialog = new Form
+            {
+                Text = "Ajouter un Client",
+                Size = new Size(360, 300),
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                ShowIcon = false,
+                BackColor = Color.White
+            };
 
-            Label lblName = new Label() { Text = "Name:", Left = 10, Top = 20, AutoSize = true };
-            TextBox txtName = new TextBox() { Left = 100, Top = 15, Width = 150 };
+            Label lblTitle = new Label()
+            {
+                Text = "Entrez les informations du client",
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                ForeColor = Color.FromArgb(40, 40, 40),
+                AutoSize = false,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Top,
+                Height = 40
+            };
+            dialog.Controls.Add(lblTitle);
 
-            Label lblEmail = new Label() { Text = "Email:", Left = 10, Top = 60, AutoSize = true };
-            TextBox txtEmail = new TextBox() { Left = 100, Top = 55, Width = 150 };
+            Panel panel = new Panel()
+            {
+                Dock = DockStyle.Top,
+                Height = 140,
+                Padding = new Padding(20)
+            };
+            dialog.Controls.Add(panel);
 
-            Label lblPhone = new Label() { Text = "Phone:", Left = 10, Top = 100, AutoSize = true };
-            TextBox txtPhone = new TextBox() { Left = 100, Top = 95, Width = 150 };
+            Label lblName = new Label() { Text = "Nom :", Top = 10, Left = 10, AutoSize = true };
+            TextBox txtName = new TextBox() { Left = 110, Top = 8, Width = 200 };
 
-            Button btnOK = new Button() { Text = "Save", Left = 60, Top = 175, Width = 80, DialogResult = DialogResult.OK };
-            Button btnCancel = new Button() { Text = "Cancel", Left = 150, Top = 175, Width = 80, DialogResult = DialogResult.Cancel };
+            Label lblEmail = new Label() { Text = "Email :", Top = 55, Left = 10, AutoSize = true };
+            TextBox txtEmail = new TextBox() { Left = 110, Top = 50, Width = 200 };
 
-            dialog.Controls.Add(lblName);
-            dialog.Controls.Add(txtName);
-            dialog.Controls.Add(lblEmail);
-            dialog.Controls.Add(txtEmail);
-            dialog.Controls.Add(lblPhone);
-            dialog.Controls.Add(txtPhone);
+            Label lblPhone = new Label() { Text = "Téléphone :", Top = 100, Left = 10, AutoSize = true };
+            TextBox txtPhone = new TextBox() { Left = 110, Top = 95, Width = 200 };
+
+            panel.Controls.AddRange(new Control[] { lblName, txtName, lblEmail, txtEmail, lblPhone, txtPhone });
+
+            Button btnOK = new Button()
+            {
+                Text = "Enregistrer",
+                Left = 40,
+                Top = 200,
+                Width = 110,
+                Height = 35,
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Color.White,
+                ForeColor = Color.FromArgb(40, 167, 69),
+                Font = new Font("Segoe UI", 9, FontStyle.Bold)
+            };
+            btnOK.FlatAppearance.BorderColor = Color.FromArgb(40, 167, 69);
+            btnOK.FlatAppearance.BorderSize = 1;
+            btnOK.FlatAppearance.MouseOverBackColor = Color.FromArgb(245, 255, 245);
+
+            Button btnCancel = new Button()
+            {
+                Text = "Annuler",
+                Left = 190,
+                Top = 200,
+                Width = 110,
+                Height = 35,
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Color.White,
+                ForeColor = Color.FromArgb(220, 53, 69),
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                DialogResult = DialogResult.Cancel
+            };
+            btnCancel.FlatAppearance.BorderColor = Color.FromArgb(220, 53, 69);
+            btnCancel.FlatAppearance.BorderSize = 1;
+            btnCancel.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 245, 245);
 
             dialog.Controls.Add(btnOK);
             dialog.Controls.Add(btnCancel);
+
+            btnOK.Click += (s, e) =>
+            {
+                string name = txtName.Text.Trim();
+                string email = txtEmail.Text.Trim();
+                string phone = txtPhone.Text.Trim();
+
+                Regex nameRegex = new Regex(@"^[A-Za-zÀ-ÿ\s'-]{2,}$");
+                Regex emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+                Regex phoneRegex = new Regex(@"^[0-9\-\+\s]{7,15}$");
+
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    MessageBox.Show("Le nom du client est obligatoire.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtName.Focus();
+                    return;
+                }
+                if (!nameRegex.IsMatch(name))
+                {
+                    MessageBox.Show("Le nom contient des caractères invalides.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtName.Focus();
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(email))
+                {
+                    MessageBox.Show("L'email est obligatoire.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtEmail.Focus();
+                    return;
+                }
+                if (!emailRegex.IsMatch(email))
+                {
+                    MessageBox.Show("Format d'email invalide.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtEmail.Focus();
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(phone))
+                {
+                    MessageBox.Show("Le téléphone est obligatoire.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtPhone.Focus();
+                    return;
+                }
+                if (!phoneRegex.IsMatch(phone))
+                {
+                    MessageBox.Show("Numéro de téléphone invalide.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtPhone.Focus();
+                    return;
+                }
+
+                dialog.Tag = new Client(name, email, phone);
+                dialog.DialogResult = DialogResult.OK;
+                dialog.Close();
+            };
 
             dialog.AcceptButton = btnOK;
             dialog.CancelButton = btnCancel;
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                return new Client(
-                    txtName.Text,
-                    txtEmail.Text,
-                    txtPhone.Text
-                );
+                return dialog.Tag as Client;
             }
 
             return null;
@@ -152,42 +249,143 @@ namespace TP1_420_BD
 
         private Client? RetrieveInfoClient(int id, string name, string email, string phone)
         {
-            Form dialog = new Form();
-            dialog.Text = "Edit Client";
-            dialog.Size = new Size(300, 250);
-            dialog.StartPosition = FormStartPosition.CenterParent;
-            dialog.FormBorderStyle = FormBorderStyle.FixedDialog;
-            dialog.MaximizeBox = false;
-            dialog.MinimizeBox = false;
-            dialog.ShowIcon = false;
+            Form dialog = new Form
+            {
+                Text = "Modifier un Client",
+                Size = new Size(360, 300),
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                ShowIcon = false,
+                BackColor = Color.White
+            };
 
-            Label lblName = new Label() { Text = "Name:", Left = 10, Top = 20, AutoSize = true };
-            TextBox txtName = new TextBox() { Left = 100, Top = 15, Width = 150, Text = name };
+            Label lblTitle = new Label()
+            {
+                Text = "Modifier les informations du client",
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                ForeColor = Color.FromArgb(40, 40, 40),
+                AutoSize = false,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Top,
+                Height = 40
+            };
+            dialog.Controls.Add(lblTitle);
 
-            Label lblEmail = new Label() { Text = "Email:", Left = 10, Top = 60, AutoSize = true };
-            TextBox txtEmail = new TextBox() { Left = 100, Top = 55, Width = 150, Text = email };
+            Panel panel = new Panel()
+            {
+                Dock = DockStyle.Top,
+                Height = 140,
+                Padding = new Padding(20)
+            };
+            dialog.Controls.Add(panel);
 
-            Label lblPhone = new Label() { Text = "Phone:", Left = 10, Top = 100, AutoSize = true };
-            TextBox txtPhone = new TextBox() { Left = 100, Top = 95, Width = 150, Text = phone };
+            Label lblName = new Label() { Text = "Nom :", Top = 10, Left = 10, AutoSize = true };
+            TextBox txtName = new TextBox() { Left = 110, Top = 8, Width = 200, Text = name };
 
-            Button btnOK = new Button() { Text = "Modify", Left = 60, Top = 175, Width = 80, DialogResult = DialogResult.OK };
-            Button btnCancel = new Button() { Text = "Cancel", Left = 150, Top = 175, Width = 80, DialogResult = DialogResult.Cancel };
+            Label lblEmail = new Label() { Text = "Email :", Top = 55, Left = 10, AutoSize = true };
+            TextBox txtEmail = new TextBox() { Left = 110, Top = 50, Width = 200, Text = email };
 
-            dialog.Controls.Add(lblName);
-            dialog.Controls.Add(txtName);
-            dialog.Controls.Add(lblEmail);
-            dialog.Controls.Add(txtEmail);
-            dialog.Controls.Add(lblPhone);
-            dialog.Controls.Add(txtPhone);
+            Label lblPhone = new Label() { Text = "Téléphone :", Top = 100, Left = 10, AutoSize = true };
+            TextBox txtPhone = new TextBox() { Left = 110, Top = 95, Width = 200, Text = phone };
+
+            panel.Controls.AddRange(new Control[] { lblName, txtName, lblEmail, txtEmail, lblPhone, txtPhone });
+
+            Button btnOK = new Button()
+            {
+                Text = "Modifier",
+                Left = 40,
+                Top = 200,
+                Width = 110,
+                Height = 35,
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Color.White,
+                ForeColor = Color.FromArgb(40, 167, 69),
+                Font = new Font("Segoe UI", 9, FontStyle.Bold)
+            };
+            btnOK.FlatAppearance.BorderColor = Color.FromArgb(40, 167, 69);
+            btnOK.FlatAppearance.BorderSize = 1;
+            btnOK.FlatAppearance.MouseOverBackColor = Color.FromArgb(245, 255, 245);
+
+            Button btnCancel = new Button()
+            {
+                Text = "Annuler",
+                Left = 190,
+                Top = 200,
+                Width = 110,
+                Height = 35,
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Color.White,
+                ForeColor = Color.FromArgb(220, 53, 69),
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                DialogResult = DialogResult.Cancel
+            };
+            btnCancel.FlatAppearance.BorderColor = Color.FromArgb(220, 53, 69);
+            btnCancel.FlatAppearance.BorderSize = 1;
+            btnCancel.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 245, 245);
+
             dialog.Controls.Add(btnOK);
             dialog.Controls.Add(btnCancel);
+
+            btnOK.Click += (s, e) =>
+            {
+                string newName = txtName.Text.Trim();
+                string newEmail = txtEmail.Text.Trim();
+                string newPhone = txtPhone.Text.Trim();
+
+                Regex nameRegex = new Regex(@"^[A-Za-zÀ-ÿ\s'-]{2,}$");
+                Regex emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+                Regex phoneRegex = new Regex(@"^[0-9\-\+\s]{7,15}$");
+
+                if (string.IsNullOrWhiteSpace(newName))
+                {
+                    MessageBox.Show("Le nom du client est obligatoire.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtName.Focus();
+                    return;
+                }
+                if (!nameRegex.IsMatch(newName))
+                {
+                    MessageBox.Show("Le nom contient des caractères invalides.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtName.Focus();
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(newEmail))
+                {
+                    MessageBox.Show("L'email est obligatoire.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtEmail.Focus();
+                    return;
+                }
+                if (!emailRegex.IsMatch(newEmail))
+                {
+                    MessageBox.Show("Format d'email invalide.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtEmail.Focus();
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(newPhone))
+                {
+                    MessageBox.Show("Le téléphone est obligatoire.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtPhone.Focus();
+                    return;
+                }
+                if (!phoneRegex.IsMatch(newPhone))
+                {
+                    MessageBox.Show("Numéro de téléphone invalide.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtPhone.Focus();
+                    return;
+                }
+
+                dialog.Tag = new Client(id, newName, newEmail, newPhone);
+                dialog.DialogResult = DialogResult.OK;
+                dialog.Close();
+            };
 
             dialog.AcceptButton = btnOK;
             dialog.CancelButton = btnCancel;
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                return new Client(id, txtName.Text, txtEmail.Text, txtPhone.Text);
+                return dialog.Tag as Client;
             }
 
             return null;
@@ -214,7 +412,7 @@ namespace TP1_420_BD
                     }
                 }
 
-                MessageBox.Show("Client updated!");
+                MessageBox.Show("Client modifier!");
             }
             catch (Exception ex)
             {
@@ -240,7 +438,7 @@ namespace TP1_420_BD
         {
             if (selectedClientId == -1)
             {
-                MessageBox.Show("Select a client.");
+                MessageBox.Show("Choisir un client.");
                 return;
             }
 
