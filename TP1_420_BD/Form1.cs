@@ -83,6 +83,7 @@ namespace TP1_420_BD
                 InsertClient(client);
                 ReadClients();
             }
+            MessageBox.Show("Client ajouté!");
         }
 
         // update client button
@@ -125,13 +126,27 @@ namespace TP1_420_BD
 
             if (selectedClientId != null)
             {
-                DeleteClient(selectedClientId);
-                ReadClients();
+                var confirmDelete = MessageBox.Show("Are you sure to delete this client?",
+                                     "Confirmation",
+                                     MessageBoxButtons.YesNo);
+                if (confirmDelete == DialogResult.Yes)
+                {
+                    DeleteClient(selectedClientId);
+                    ReadClients();
 
-                selectedClientId = -1;
-                selectedName = "";
-                selectedEmail = "";
-                selectedPhone = "";
+                    MessageBox.Show("Client deleted!");
+
+                    selectedClientId = -1;
+                    selectedName = "";
+                    selectedEmail = "";
+                    selectedPhone = "";
+                }
+                else
+                {
+                    return;
+                }
+
+
 
             }
 
@@ -141,7 +156,7 @@ namespace TP1_420_BD
         private Client? GetNewClient()
         {
             Form dialog = new Form();
-            dialog.Text = "Add Client";
+            dialog.Text = "Ajouter";
             dialog.Size = new Size(300, 250);
             dialog.StartPosition = FormStartPosition.CenterParent;
             dialog.FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -158,8 +173,8 @@ namespace TP1_420_BD
             Label lblPhone = new Label() { Text = "Phone:", Left = 10, Top = 100, AutoSize = true };
             TextBox txtPhone = new TextBox() { Left = 100, Top = 95, Width = 150 };
 
-            Button btnOK = new Button() { Text = "Save", Left = 60, Top = 175, Width = 80, DialogResult = DialogResult.OK };
-            Button btnCancel = new Button() { Text = "Cancel", Left = 150, Top = 175, Width = 80, DialogResult = DialogResult.Cancel };
+            Button btnOK = new Button() { Text = "Ajouter", Left = 60, Top = 175, Width = 80, DialogResult = DialogResult.OK };
+            Button btnCancel = new Button() { Text = "Annuler", Left = 150, Top = 175, Width = 80, DialogResult = DialogResult.Cancel };
 
             dialog.Controls.Add(lblName);
             dialog.Controls.Add(txtName);
@@ -368,7 +383,7 @@ namespace TP1_420_BD
 
         private void deleteCommandButton_Click(object sender, EventArgs e)
         {
-            if(commandsGridView.SelectedRows.Count >0)
+            if (commandsGridView.SelectedRows.Count > 0)
             {
                 //get the selected row
                 DataGridViewRow selectedRow = commandsGridView.SelectedRows[0];
