@@ -28,40 +28,45 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Home = new Panel();
+            home = new Panel();
             title = new Label();
             clientsButton = new Button();
             commandesButton = new Button();
-            Clients = new Panel();
+            commandes = new Panel();
+            commandesReturnButton = new Button();
+            addCommandButton = new Button();
+            modifyCommandButton = new Button();
+            deleteCommandButton = new Button();
+            rechercheCommandesInput = new TextBox();
+            rechercheCommandesLabel = new Label();
+            commandsGridView = new DataGridView();
+            commandesTitle = new Label();
+            clients = new Panel();
+            clientsReturnButton = new Button();
             addClientButton = new Button();
-            phoneLabel = new Label();
-            phoneInput = new TextBox();
-            emailLabel = new Label();
-            emailInput = new TextBox();
-            nameLabel = new Label();
-            nameInput = new TextBox();
-            addClient = new Label();
             modifyClientButton = new Button();
-            DeleteClientButton = new Button();
-            rechercheInput = new TextBox();
-            chercheLabel = new Label();
-            dgvClients = new DataGridView();
+            deleteClientButton = new Button();
+            rechercheClientsInput = new TextBox();
+            rechercheClientsLabel = new Label();
+            clientsGridView = new DataGridView();
             clientsTitle = new Label();
-            Home.SuspendLayout();
-            Clients.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvClients).BeginInit();
+            home.SuspendLayout();
+            commandes.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)commandsGridView).BeginInit();
+            clients.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)clientsGridView).BeginInit();
             SuspendLayout();
             // 
-            // Home
+            // home
             // 
-            Home.BackgroundImage = Properties.Resources.bg_tp1;
-            Home.Controls.Add(title);
-            Home.Controls.Add(clientsButton);
-            Home.Controls.Add(commandesButton);
-            Home.Location = new Point(-1, -1);
-            Home.Name = "Home";
-            Home.Size = new Size(801, 453);
-            Home.TabIndex = 0;
+            home.BackgroundImage = Properties.Resources.bg_tp1;
+            home.Controls.Add(title);
+            home.Controls.Add(clientsButton);
+            home.Controls.Add(commandesButton);
+            home.Location = new Point(-1, -1);
+            home.Name = "home";
+            home.Size = new Size(801, 453);
+            home.TabIndex = 0;
             // 
             // title
             // 
@@ -111,29 +116,159 @@
             commandesButton.TabIndex = 1;
             commandesButton.Text = "Commandes";
             commandesButton.UseVisualStyleBackColor = false;
+            commandesButton.Click += commandesButton_Click;
             // 
-            // Clients
+            // commandes
             // 
-            Clients.BackgroundImage = Properties.Resources.bg_tp1;
-            Clients.Controls.Add(addClientButton);
-            Clients.Controls.Add(phoneLabel);
-            Clients.Controls.Add(phoneInput);
-            Clients.Controls.Add(emailLabel);
-            Clients.Controls.Add(emailInput);
-            Clients.Controls.Add(nameLabel);
-            Clients.Controls.Add(nameInput);
-            Clients.Controls.Add(addClient);
-            Clients.Controls.Add(modifyClientButton);
-            Clients.Controls.Add(DeleteClientButton);
-            Clients.Controls.Add(rechercheInput);
-            Clients.Controls.Add(chercheLabel);
-            Clients.Controls.Add(dgvClients);
-            Clients.Controls.Add(clientsTitle);
-            Clients.Location = new Point(0, -1);
-            Clients.Name = "Clients";
-            Clients.Size = new Size(801, 453);
-            Clients.TabIndex = 2;
-            Clients.Visible = false;
+            commandes.BackgroundImage = Properties.Resources.bg_tp1;
+            commandes.Controls.Add(commandesReturnButton);
+            commandes.Controls.Add(addCommandButton);
+            commandes.Controls.Add(modifyCommandButton);
+            commandes.Controls.Add(deleteCommandButton);
+            commandes.Controls.Add(rechercheCommandesInput);
+            commandes.Controls.Add(rechercheCommandesLabel);
+            commandes.Controls.Add(commandsGridView);
+            commandes.Controls.Add(commandesTitle);
+            commandes.Dock = DockStyle.Fill;
+            commandes.Location = new Point(0, 0);
+            commandes.Name = "commandes";
+            commandes.Size = new Size(800, 450);
+            commandes.TabIndex = 3;
+            commandes.Visible = false;
+            // 
+            // commandesReturnButton
+            // 
+            commandesReturnButton.Location = new Point(38, 34);
+            commandesReturnButton.Name = "commandesReturnButton";
+            commandesReturnButton.Size = new Size(75, 23);
+            commandesReturnButton.TabIndex = 17;
+            commandesReturnButton.Text = "< Retouner";
+            commandesReturnButton.UseVisualStyleBackColor = true;
+            commandesReturnButton.Click += commandesReturnButton_Click;
+            // 
+            // addCommandButton
+            // 
+            addCommandButton.BackColor = SystemColors.ButtonHighlight;
+            addCommandButton.Cursor = Cursors.Hand;
+            addCommandButton.FlatAppearance.BorderColor = Color.Green;
+            addCommandButton.FlatAppearance.BorderSize = 2;
+            addCommandButton.FlatAppearance.MouseDownBackColor = Color.Honeydew;
+            addCommandButton.FlatAppearance.MouseOverBackColor = Color.MintCream;
+            addCommandButton.FlatStyle = FlatStyle.Flat;
+            addCommandButton.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            addCommandButton.ForeColor = Color.Green;
+            addCommandButton.Location = new Point(38, 184);
+            addCommandButton.Name = "addCommandButton";
+            addCommandButton.Size = new Size(186, 37);
+            addCommandButton.TabIndex = 15;
+            addCommandButton.Text = "Ajouter";
+            addCommandButton.UseVisualStyleBackColor = false;
+            // 
+            // modifyCommandButton
+            // 
+            modifyCommandButton.BackColor = SystemColors.ButtonHighlight;
+            modifyCommandButton.Cursor = Cursors.Hand;
+            modifyCommandButton.FlatAppearance.BorderColor = Color.BurlyWood;
+            modifyCommandButton.FlatAppearance.BorderSize = 2;
+            modifyCommandButton.FlatAppearance.MouseDownBackColor = Color.PapayaWhip;
+            modifyCommandButton.FlatAppearance.MouseOverBackColor = Color.OldLace;
+            modifyCommandButton.FlatStyle = FlatStyle.Flat;
+            modifyCommandButton.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            modifyCommandButton.ForeColor = Color.DarkGoldenrod;
+            modifyCommandButton.Location = new Point(38, 249);
+            modifyCommandButton.Name = "modifyCommandButton";
+            modifyCommandButton.Size = new Size(186, 37);
+            modifyCommandButton.TabIndex = 6;
+            modifyCommandButton.Text = "Modifier";
+            modifyCommandButton.UseVisualStyleBackColor = false;
+            // 
+            // deleteCommandButton
+            // 
+            deleteCommandButton.BackColor = SystemColors.ButtonHighlight;
+            deleteCommandButton.Cursor = Cursors.Hand;
+            deleteCommandButton.FlatAppearance.BorderColor = Color.Firebrick;
+            deleteCommandButton.FlatAppearance.BorderSize = 2;
+            deleteCommandButton.FlatAppearance.MouseDownBackColor = Color.MistyRose;
+            deleteCommandButton.FlatAppearance.MouseOverBackColor = Color.Snow;
+            deleteCommandButton.FlatStyle = FlatStyle.Flat;
+            deleteCommandButton.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            deleteCommandButton.ForeColor = Color.Firebrick;
+            deleteCommandButton.Location = new Point(38, 315);
+            deleteCommandButton.Name = "deleteCommandButton";
+            deleteCommandButton.Size = new Size(186, 37);
+            deleteCommandButton.TabIndex = 7;
+            deleteCommandButton.Text = "Supprimer";
+            deleteCommandButton.UseVisualStyleBackColor = false;
+            // 
+            // rechercheCommandesInput
+            // 
+            rechercheCommandesInput.Location = new Point(595, 96);
+            rechercheCommandesInput.Name = "rechercheCommandesInput";
+            rechercheCommandesInput.Size = new Size(164, 23);
+            rechercheCommandesInput.TabIndex = 5;
+            // 
+            // rechercheCommandesLabel
+            // 
+            rechercheCommandesLabel.AutoSize = true;
+            rechercheCommandesLabel.BackColor = Color.Transparent;
+            rechercheCommandesLabel.Font = new Font("Montserrat SemiBold", 9.749999F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            rechercheCommandesLabel.ForeColor = Color.Black;
+            rechercheCommandesLabel.Location = new Point(496, 99);
+            rechercheCommandesLabel.Name = "rechercheCommandesLabel";
+            rechercheCommandesLabel.Size = new Size(93, 20);
+            rechercheCommandesLabel.TabIndex = 4;
+            rechercheCommandesLabel.Text = "Recherche : ";
+            // 
+            // commandsGridView
+            // 
+            commandsGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            commandsGridView.BackgroundColor = Color.White;
+            commandsGridView.BorderStyle = BorderStyle.None;
+            commandsGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            commandsGridView.Location = new Point(266, 152);
+            commandsGridView.Name = "commandsGridView";
+            commandsGridView.Size = new Size(493, 239);
+            commandsGridView.TabIndex = 3;
+            // 
+            // commandesTitle
+            // 
+            commandesTitle.AutoSize = true;
+            commandesTitle.BackColor = Color.Transparent;
+            commandesTitle.Font = new Font("Montserrat", 21.7499962F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            commandesTitle.Location = new Point(288, 28);
+            commandesTitle.Name = "commandesTitle";
+            commandesTitle.Size = new Size(227, 45);
+            commandesTitle.TabIndex = 2;
+            commandesTitle.Text = "COMMANDES";
+            commandesTitle.TextAlign = ContentAlignment.TopRight;
+            // 
+            // clients
+            // 
+            clients.BackgroundImage = Properties.Resources.bg_tp1;
+            clients.Controls.Add(clientsReturnButton);
+            clients.Controls.Add(addClientButton);
+            clients.Controls.Add(modifyClientButton);
+            clients.Controls.Add(deleteClientButton);
+            clients.Controls.Add(rechercheClientsInput);
+            clients.Controls.Add(rechercheClientsLabel);
+            clients.Controls.Add(clientsGridView);
+            clients.Controls.Add(clientsTitle);
+            clients.Dock = DockStyle.Fill;
+            clients.Location = new Point(0, 0);
+            clients.Name = "clients";
+            clients.Size = new Size(800, 450);
+            clients.TabIndex = 4;
+            clients.Visible = false;
+            // 
+            // clientsReturnButton
+            // 
+            clientsReturnButton.Location = new Point(38, 34);
+            clientsReturnButton.Name = "clientsReturnButton";
+            clientsReturnButton.Size = new Size(75, 23);
+            clientsReturnButton.TabIndex = 16;
+            clientsReturnButton.Text = "< Retouner";
+            clientsReturnButton.UseVisualStyleBackColor = true;
+            clientsReturnButton.Click += clientsReturnButton_Click;
             // 
             // addClientButton
             // 
@@ -146,77 +281,12 @@
             addClientButton.FlatStyle = FlatStyle.Flat;
             addClientButton.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             addClientButton.ForeColor = Color.Green;
-            addClientButton.Location = new Point(522, 382);
+            addClientButton.Location = new Point(38, 184);
             addClientButton.Name = "addClientButton";
-            addClientButton.Size = new Size(237, 37);
+            addClientButton.Size = new Size(186, 37);
             addClientButton.TabIndex = 15;
             addClientButton.Text = "Ajouter";
             addClientButton.UseVisualStyleBackColor = false;
-            // 
-            // phoneLabel
-            // 
-            phoneLabel.AutoSize = true;
-            phoneLabel.BackColor = Color.Transparent;
-            phoneLabel.Font = new Font("Montserrat SemiBold", 9.749999F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            phoneLabel.Location = new Point(519, 303);
-            phoneLabel.Name = "phoneLabel";
-            phoneLabel.Size = new Size(82, 20);
-            phoneLabel.TabIndex = 14;
-            phoneLabel.Text = "Téléphone:";
-            // 
-            // phoneInput
-            // 
-            phoneInput.Location = new Point(522, 326);
-            phoneInput.Name = "phoneInput";
-            phoneInput.Size = new Size(237, 23);
-            phoneInput.TabIndex = 13;
-            // 
-            // emailLabel
-            // 
-            emailLabel.AutoSize = true;
-            emailLabel.BackColor = Color.Transparent;
-            emailLabel.Font = new Font("Montserrat SemiBold", 9.749999F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            emailLabel.Location = new Point(519, 241);
-            emailLabel.Name = "emailLabel";
-            emailLabel.Size = new Size(51, 20);
-            emailLabel.TabIndex = 12;
-            emailLabel.Text = "Email:";
-            // 
-            // emailInput
-            // 
-            emailInput.Location = new Point(522, 264);
-            emailInput.Name = "emailInput";
-            emailInput.Size = new Size(237, 23);
-            emailInput.TabIndex = 11;
-            // 
-            // nameLabel
-            // 
-            nameLabel.AutoSize = true;
-            nameLabel.BackColor = Color.Transparent;
-            nameLabel.Font = new Font("Montserrat SemiBold", 9.749999F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            nameLabel.Location = new Point(519, 179);
-            nameLabel.Name = "nameLabel";
-            nameLabel.Size = new Size(45, 20);
-            nameLabel.TabIndex = 10;
-            nameLabel.Text = "Nom:";
-            // 
-            // nameInput
-            // 
-            nameInput.Location = new Point(522, 202);
-            nameInput.Name = "nameInput";
-            nameInput.Size = new Size(237, 23);
-            nameInput.TabIndex = 9;
-            // 
-            // addClient
-            // 
-            addClient.AutoSize = true;
-            addClient.BackColor = Color.Transparent;
-            addClient.Font = new Font("Montserrat", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            addClient.Location = new Point(520, 131);
-            addClient.Name = "addClient";
-            addClient.Size = new Size(158, 30);
-            addClient.TabIndex = 8;
-            addClient.Text = "Ajouter client: ";
             // 
             // modifyClientButton
             // 
@@ -229,67 +299,67 @@
             modifyClientButton.FlatStyle = FlatStyle.Flat;
             modifyClientButton.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             modifyClientButton.ForeColor = Color.DarkGoldenrod;
-            modifyClientButton.Location = new Point(78, 382);
+            modifyClientButton.Location = new Point(38, 249);
             modifyClientButton.Name = "modifyClientButton";
-            modifyClientButton.Size = new Size(160, 37);
+            modifyClientButton.Size = new Size(186, 37);
             modifyClientButton.TabIndex = 6;
             modifyClientButton.Text = "Modifier";
             modifyClientButton.UseVisualStyleBackColor = false;
             // 
-            // DeleteClientButton
+            // deleteClientButton
             // 
-            DeleteClientButton.BackColor = SystemColors.ButtonHighlight;
-            DeleteClientButton.Cursor = Cursors.Hand;
-            DeleteClientButton.FlatAppearance.BorderColor = Color.Firebrick;
-            DeleteClientButton.FlatAppearance.BorderSize = 2;
-            DeleteClientButton.FlatAppearance.MouseDownBackColor = Color.MistyRose;
-            DeleteClientButton.FlatAppearance.MouseOverBackColor = Color.Snow;
-            DeleteClientButton.FlatStyle = FlatStyle.Flat;
-            DeleteClientButton.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            DeleteClientButton.ForeColor = Color.Firebrick;
-            DeleteClientButton.Location = new Point(266, 382);
-            DeleteClientButton.Name = "DeleteClientButton";
-            DeleteClientButton.Size = new Size(160, 37);
-            DeleteClientButton.TabIndex = 7;
-            DeleteClientButton.Text = "Supprimer";
-            DeleteClientButton.UseVisualStyleBackColor = false;
+            deleteClientButton.BackColor = SystemColors.ButtonHighlight;
+            deleteClientButton.Cursor = Cursors.Hand;
+            deleteClientButton.FlatAppearance.BorderColor = Color.Firebrick;
+            deleteClientButton.FlatAppearance.BorderSize = 2;
+            deleteClientButton.FlatAppearance.MouseDownBackColor = Color.MistyRose;
+            deleteClientButton.FlatAppearance.MouseOverBackColor = Color.Snow;
+            deleteClientButton.FlatStyle = FlatStyle.Flat;
+            deleteClientButton.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            deleteClientButton.ForeColor = Color.Firebrick;
+            deleteClientButton.Location = new Point(38, 315);
+            deleteClientButton.Name = "deleteClientButton";
+            deleteClientButton.Size = new Size(186, 37);
+            deleteClientButton.TabIndex = 7;
+            deleteClientButton.Text = "Supprimer";
+            deleteClientButton.UseVisualStyleBackColor = false;
             // 
-            // rechercheInput
+            // rechercheClientsInput
             // 
-            rechercheInput.Location = new Point(133, 97);
-            rechercheInput.Name = "rechercheInput";
-            rechercheInput.Size = new Size(164, 23);
-            rechercheInput.TabIndex = 5;
+            rechercheClientsInput.Location = new Point(595, 96);
+            rechercheClientsInput.Name = "rechercheClientsInput";
+            rechercheClientsInput.Size = new Size(164, 23);
+            rechercheClientsInput.TabIndex = 5;
             // 
-            // chercheLabel
+            // rechercheClientsLabel
             // 
-            chercheLabel.AutoSize = true;
-            chercheLabel.BackColor = Color.Transparent;
-            chercheLabel.Font = new Font("Montserrat SemiBold", 9.749999F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            chercheLabel.ForeColor = Color.Black;
-            chercheLabel.Location = new Point(34, 100);
-            chercheLabel.Name = "chercheLabel";
-            chercheLabel.Size = new Size(93, 20);
-            chercheLabel.TabIndex = 4;
-            chercheLabel.Text = "Recherche : ";
+            rechercheClientsLabel.AutoSize = true;
+            rechercheClientsLabel.BackColor = Color.Transparent;
+            rechercheClientsLabel.Font = new Font("Montserrat SemiBold", 9.749999F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            rechercheClientsLabel.ForeColor = Color.Black;
+            rechercheClientsLabel.Location = new Point(496, 99);
+            rechercheClientsLabel.Name = "rechercheClientsLabel";
+            rechercheClientsLabel.Size = new Size(93, 20);
+            rechercheClientsLabel.TabIndex = 4;
+            rechercheClientsLabel.Text = "Recherche : ";
             // 
-            // dgvClients
+            // clientsGridView
             // 
-            dgvClients.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvClients.BackgroundColor = Color.White;
-            dgvClients.BorderStyle = BorderStyle.None;
-            dgvClients.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvClients.Location = new Point(38, 137);
-            dgvClients.Name = "dgvClients";
-            dgvClients.Size = new Size(432, 239);
-            dgvClients.TabIndex = 3;
+            clientsGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            clientsGridView.BackgroundColor = Color.White;
+            clientsGridView.BorderStyle = BorderStyle.None;
+            clientsGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            clientsGridView.Location = new Point(266, 152);
+            clientsGridView.Name = "clientsGridView";
+            clientsGridView.Size = new Size(493, 239);
+            clientsGridView.TabIndex = 3;
             // 
             // clientsTitle
             // 
             clientsTitle.AutoSize = true;
             clientsTitle.BackColor = Color.Transparent;
             clientsTitle.Font = new Font("Montserrat", 21.7499962F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            clientsTitle.Location = new Point(322, 29);
+            clientsTitle.Location = new Point(329, 28);
             clientsTitle.Name = "clientsTitle";
             clientsTitle.Size = new Size(148, 45);
             clientsTitle.TabIndex = 2;
@@ -301,39 +371,46 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(Clients);
-            Controls.Add(Home);
+            Controls.Add(commandes);
+            Controls.Add(clients);
+            Controls.Add(home);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "Form1";
             Text = "Gestion Clients et Commandes";
-            Home.ResumeLayout(false);
-            Home.PerformLayout();
-            Clients.ResumeLayout(false);
-            Clients.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvClients).EndInit();
+            home.ResumeLayout(false);
+            home.PerformLayout();
+            commandes.ResumeLayout(false);
+            commandes.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)commandsGridView).EndInit();
+            clients.ResumeLayout(false);
+            clients.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)clientsGridView).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Panel Home;
+        private Panel home;
         private Button clientsButton;
         private Button commandesButton;
         private Label title;
-        private Panel Clients;
-        private DataGridView dgvClients;
-        private Label clientsTitle;
-        private Label chercheLabel;
-        private TextBox rechercheInput;
-        private Button modifyClientButton;
-        private Button DeleteClientButton;
-        private Label addClient;
-        private Label nameLabel;
-        private TextBox nameInput;
+        private Panel commandes;
+        private Button addCommandButton;
+        private Button modifyCommandButton;
+        private Button deleteCommandButton;
+        private TextBox rechercheCommandesInput;
+        private Label rechercheCommandesLabel;
+        private DataGridView commandsGridView;
+        private Label commandesTitle;
+        private Panel clients;
         private Button addClientButton;
-        private Label phoneLabel;
-        private TextBox phoneInput;
-        private Label emailLabel;
-        private TextBox emailInput;
+        private Button modifyClientButton;
+        private Button deleteClientButton;
+        private TextBox rechercheClientsInput;
+        private Label rechercheClientsLabel;
+        private Label clientsTitle;
+        private Button commandesReturnButton;
+        private Button clientsReturnButton;
+        private DataGridView clientsGridView;
     }
 }
