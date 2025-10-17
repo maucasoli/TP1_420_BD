@@ -33,6 +33,9 @@
             clientsButton = new Button();
             commandesButton = new Button();
             Clients = new Panel();
+            btn_delete_client = new Button();
+            btn_modify_client = new Button();
+            btn_add_client = new Button();
             dgvClients = new DataGridView();
             label1 = new Label();
             Home.SuspendLayout();
@@ -103,21 +106,56 @@
             // Clients
             // 
             Clients.BackgroundImage = Properties.Resources.bg_tp1;
+            Clients.Controls.Add(btn_delete_client);
+            Clients.Controls.Add(btn_modify_client);
+            Clients.Controls.Add(btn_add_client);
             Clients.Controls.Add(dgvClients);
             Clients.Controls.Add(label1);
-            Clients.Location = new Point(0, -1);
+            Clients.Dock = DockStyle.Fill;
+            Clients.Location = new Point(0, 0);
             Clients.Name = "Clients";
-            Clients.Size = new Size(801, 453);
+            Clients.Size = new Size(800, 450);
             Clients.TabIndex = 2;
             Clients.Visible = false;
+            // 
+            // btn_delete_client
+            // 
+            btn_delete_client.Location = new Point(41, 207);
+            btn_delete_client.Name = "btn_delete_client";
+            btn_delete_client.Size = new Size(75, 23);
+            btn_delete_client.TabIndex = 6;
+            btn_delete_client.Text = "Delete Client";
+            btn_delete_client.UseVisualStyleBackColor = true;
+            btn_delete_client.Click += btn_delete_client_Click;
+            // 
+            // btn_modify_client
+            // 
+            btn_modify_client.Location = new Point(41, 153);
+            btn_modify_client.Name = "btn_modify_client";
+            btn_modify_client.Size = new Size(75, 23);
+            btn_modify_client.TabIndex = 5;
+            btn_modify_client.Text = "Modify Client";
+            btn_modify_client.UseVisualStyleBackColor = true;
+            btn_modify_client.Click += btn_modify_client_Click;
+            // 
+            // btn_add_client
+            // 
+            btn_add_client.Location = new Point(41, 111);
+            btn_add_client.Name = "btn_add_client";
+            btn_add_client.Size = new Size(75, 23);
+            btn_add_client.TabIndex = 4;
+            btn_add_client.Text = "Add Client";
+            btn_add_client.UseVisualStyleBackColor = true;
+            btn_add_client.Click += btn_add_client_Click;
             // 
             // dgvClients
             // 
             dgvClients.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvClients.Location = new Point(107, 101);
+            dgvClients.Location = new Point(164, 101);
             dgvClients.Name = "dgvClients";
-            dgvClients.Size = new Size(613, 272);
+            dgvClients.Size = new Size(556, 272);
             dgvClients.TabIndex = 3;
+            dgvClients.CellClick += dgvClients_CellClick;
             // 
             // label1
             // 
@@ -158,5 +196,8 @@
         private Panel Clients;
         private DataGridView dgvClients;
         private Label label1;
+        private Button btn_add_client;
+        private Button btn_delete_client;
+        private Button btn_modify_client;
     }
 }
