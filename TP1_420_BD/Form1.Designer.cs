@@ -56,6 +56,7 @@
             clients.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvClients).BeginInit();
             SuspendLayout();
+            deleteCommandButton.Click += deleteCommandButton_Click;
             // 
             // home
             // 
