@@ -61,6 +61,10 @@ namespace TP1_420_BD
             home.Visible = false;
             commandes.Visible = true;
             commandes.BringToFront();
+
+            //Appel à la classe Commandes
+            var commandesView = new Models.Commands();
+            commandesView.ReadTableCommands(commandsGridView, conStr);
         }
 
         private void clientsReturnButton_Click(object sender, EventArgs e)
@@ -73,6 +77,32 @@ namespace TP1_420_BD
         {
             home.Visible = true;
             commandes.Visible = false;
+        }
+
+        private void deleteCommandButton_Click(object sender, EventArgs e)
+        {
+            if(commandsGridView.SelectedRows.Count >0)
+            {
+                //get the selected row
+                DataGridViewRow selectedRow = commandsGridView.SelectedRows[0];
+
+                //Extract the IdCommande
+                int idCommand = Convert.ToInt32(selectedRow.Cells["IdCommande"].Value);
+
+                // Confirm with the user
+
+                var confirm = MessageBox.Show($"Delete commande #{idCommand}?", "Confirm", MessageBoxButtons.YesNo);
+                if (confirm == DialogResult.Yes)
+                {
+                    var command = new Models.Commands();
+                    command.DeleteCommand(idCommand, conStr);
+                    command.ReadTableCommands(commandsGridView, conStr);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select a row to delete.");
+            }
         }
     }
 }

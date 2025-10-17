@@ -56,6 +56,7 @@
             clients.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)clientsGridView).BeginInit();
             SuspendLayout();
+            deleteCommandButton.Click += deleteCommandButton_Click;
             // 
             // home
             // 
