@@ -1,4 +1,5 @@
 using System.Data;
+using System.Windows.Forms;
 using System.Drawing;
 using DotNetEnv;
 using Microsoft.Data.SqlClient;
@@ -22,7 +23,6 @@ namespace TP1_420_BD
         public Form1()
         {
             InitializeComponent();
-            Home.Visible = true;
 
             Env.Load();
             server = Env.GetString("SERVER");
@@ -33,9 +33,9 @@ namespace TP1_420_BD
 
         private void clientsButton_Click(object sender, EventArgs e)
         {
-            Home.Visible = false;
-            Clients.Visible = true;
-            Clients.BringToFront();
+            home.Visible = false;
+            clients.Visible = true;
+            clients.BringToFront();
 
             ReadClients();
         }
@@ -264,5 +264,23 @@ namespace TP1_420_BD
             }
         }
 
+        private void commandesButton_Click(object sender, EventArgs e)
+        {
+            home.Visible = false;
+            commandes.Visible = true;
+            commandes.BringToFront();
+        }
+
+        private void clientsReturnButton_Click(object sender, EventArgs e)
+        {
+            home.Visible = true;
+            clients.Visible = false;
+        }
+
+        private void commandesReturnButton_Click(object sender, EventArgs e)
+        {
+            home.Visible = true;
+            commandes.Visible = false;
+        }
     }
 }
