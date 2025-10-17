@@ -33,8 +33,20 @@
             clientsButton = new Button();
             commandesButton = new Button();
             Clients = new Panel();
+            addClientButton = new Button();
+            phoneLabel = new Label();
+            phoneInput = new TextBox();
+            emailLabel = new Label();
+            emailInput = new TextBox();
+            nameLabel = new Label();
+            nameInput = new TextBox();
+            addClient = new Label();
+            modifyClientButton = new Button();
+            DeleteClientButton = new Button();
+            rechercheInput = new TextBox();
+            chercheLabel = new Label();
             dgvClients = new DataGridView();
-            label1 = new Label();
+            clientsTitle = new Label();
             Home.SuspendLayout();
             Clients.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvClients).BeginInit();
@@ -103,33 +115,186 @@
             // Clients
             // 
             Clients.BackgroundImage = Properties.Resources.bg_tp1;
+            Clients.Controls.Add(addClientButton);
+            Clients.Controls.Add(phoneLabel);
+            Clients.Controls.Add(phoneInput);
+            Clients.Controls.Add(emailLabel);
+            Clients.Controls.Add(emailInput);
+            Clients.Controls.Add(nameLabel);
+            Clients.Controls.Add(nameInput);
+            Clients.Controls.Add(addClient);
+            Clients.Controls.Add(modifyClientButton);
+            Clients.Controls.Add(DeleteClientButton);
+            Clients.Controls.Add(rechercheInput);
+            Clients.Controls.Add(chercheLabel);
             Clients.Controls.Add(dgvClients);
-            Clients.Controls.Add(label1);
+            Clients.Controls.Add(clientsTitle);
             Clients.Location = new Point(0, -1);
             Clients.Name = "Clients";
             Clients.Size = new Size(801, 453);
             Clients.TabIndex = 2;
             Clients.Visible = false;
             // 
+            // addClientButton
+            // 
+            addClientButton.BackColor = SystemColors.ButtonHighlight;
+            addClientButton.Cursor = Cursors.Hand;
+            addClientButton.FlatAppearance.BorderColor = Color.Green;
+            addClientButton.FlatAppearance.BorderSize = 2;
+            addClientButton.FlatAppearance.MouseDownBackColor = Color.Honeydew;
+            addClientButton.FlatAppearance.MouseOverBackColor = Color.MintCream;
+            addClientButton.FlatStyle = FlatStyle.Flat;
+            addClientButton.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            addClientButton.ForeColor = Color.Green;
+            addClientButton.Location = new Point(522, 382);
+            addClientButton.Name = "addClientButton";
+            addClientButton.Size = new Size(237, 37);
+            addClientButton.TabIndex = 15;
+            addClientButton.Text = "Ajouter";
+            addClientButton.UseVisualStyleBackColor = false;
+            // 
+            // phoneLabel
+            // 
+            phoneLabel.AutoSize = true;
+            phoneLabel.BackColor = Color.Transparent;
+            phoneLabel.Font = new Font("Montserrat SemiBold", 9.749999F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            phoneLabel.Location = new Point(519, 303);
+            phoneLabel.Name = "phoneLabel";
+            phoneLabel.Size = new Size(82, 20);
+            phoneLabel.TabIndex = 14;
+            phoneLabel.Text = "Téléphone:";
+            // 
+            // phoneInput
+            // 
+            phoneInput.Location = new Point(522, 326);
+            phoneInput.Name = "phoneInput";
+            phoneInput.Size = new Size(237, 23);
+            phoneInput.TabIndex = 13;
+            // 
+            // emailLabel
+            // 
+            emailLabel.AutoSize = true;
+            emailLabel.BackColor = Color.Transparent;
+            emailLabel.Font = new Font("Montserrat SemiBold", 9.749999F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            emailLabel.Location = new Point(519, 241);
+            emailLabel.Name = "emailLabel";
+            emailLabel.Size = new Size(51, 20);
+            emailLabel.TabIndex = 12;
+            emailLabel.Text = "Email:";
+            // 
+            // emailInput
+            // 
+            emailInput.Location = new Point(522, 264);
+            emailInput.Name = "emailInput";
+            emailInput.Size = new Size(237, 23);
+            emailInput.TabIndex = 11;
+            // 
+            // nameLabel
+            // 
+            nameLabel.AutoSize = true;
+            nameLabel.BackColor = Color.Transparent;
+            nameLabel.Font = new Font("Montserrat SemiBold", 9.749999F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            nameLabel.Location = new Point(519, 179);
+            nameLabel.Name = "nameLabel";
+            nameLabel.Size = new Size(45, 20);
+            nameLabel.TabIndex = 10;
+            nameLabel.Text = "Nom:";
+            // 
+            // nameInput
+            // 
+            nameInput.Location = new Point(522, 202);
+            nameInput.Name = "nameInput";
+            nameInput.Size = new Size(237, 23);
+            nameInput.TabIndex = 9;
+            // 
+            // addClient
+            // 
+            addClient.AutoSize = true;
+            addClient.BackColor = Color.Transparent;
+            addClient.Font = new Font("Montserrat", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            addClient.Location = new Point(520, 131);
+            addClient.Name = "addClient";
+            addClient.Size = new Size(158, 30);
+            addClient.TabIndex = 8;
+            addClient.Text = "Ajouter client: ";
+            // 
+            // modifyClientButton
+            // 
+            modifyClientButton.BackColor = SystemColors.ButtonHighlight;
+            modifyClientButton.Cursor = Cursors.Hand;
+            modifyClientButton.FlatAppearance.BorderColor = Color.BurlyWood;
+            modifyClientButton.FlatAppearance.BorderSize = 2;
+            modifyClientButton.FlatAppearance.MouseDownBackColor = Color.PapayaWhip;
+            modifyClientButton.FlatAppearance.MouseOverBackColor = Color.OldLace;
+            modifyClientButton.FlatStyle = FlatStyle.Flat;
+            modifyClientButton.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            modifyClientButton.ForeColor = Color.DarkGoldenrod;
+            modifyClientButton.Location = new Point(78, 382);
+            modifyClientButton.Name = "modifyClientButton";
+            modifyClientButton.Size = new Size(160, 37);
+            modifyClientButton.TabIndex = 6;
+            modifyClientButton.Text = "Modifier";
+            modifyClientButton.UseVisualStyleBackColor = false;
+            // 
+            // DeleteClientButton
+            // 
+            DeleteClientButton.BackColor = SystemColors.ButtonHighlight;
+            DeleteClientButton.Cursor = Cursors.Hand;
+            DeleteClientButton.FlatAppearance.BorderColor = Color.Firebrick;
+            DeleteClientButton.FlatAppearance.BorderSize = 2;
+            DeleteClientButton.FlatAppearance.MouseDownBackColor = Color.MistyRose;
+            DeleteClientButton.FlatAppearance.MouseOverBackColor = Color.Snow;
+            DeleteClientButton.FlatStyle = FlatStyle.Flat;
+            DeleteClientButton.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            DeleteClientButton.ForeColor = Color.Firebrick;
+            DeleteClientButton.Location = new Point(266, 382);
+            DeleteClientButton.Name = "DeleteClientButton";
+            DeleteClientButton.Size = new Size(160, 37);
+            DeleteClientButton.TabIndex = 7;
+            DeleteClientButton.Text = "Supprimer";
+            DeleteClientButton.UseVisualStyleBackColor = false;
+            // 
+            // rechercheInput
+            // 
+            rechercheInput.Location = new Point(133, 97);
+            rechercheInput.Name = "rechercheInput";
+            rechercheInput.Size = new Size(164, 23);
+            rechercheInput.TabIndex = 5;
+            // 
+            // chercheLabel
+            // 
+            chercheLabel.AutoSize = true;
+            chercheLabel.BackColor = Color.Transparent;
+            chercheLabel.Font = new Font("Montserrat SemiBold", 9.749999F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            chercheLabel.ForeColor = Color.Black;
+            chercheLabel.Location = new Point(34, 100);
+            chercheLabel.Name = "chercheLabel";
+            chercheLabel.Size = new Size(93, 20);
+            chercheLabel.TabIndex = 4;
+            chercheLabel.Text = "Recherche : ";
+            // 
             // dgvClients
             // 
+            dgvClients.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvClients.BackgroundColor = Color.White;
+            dgvClients.BorderStyle = BorderStyle.None;
             dgvClients.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvClients.Location = new Point(107, 101);
+            dgvClients.Location = new Point(38, 137);
             dgvClients.Name = "dgvClients";
-            dgvClients.Size = new Size(613, 272);
+            dgvClients.Size = new Size(432, 239);
             dgvClients.TabIndex = 3;
             // 
-            // label1
+            // clientsTitle
             // 
-            label1.AutoSize = true;
-            label1.BackColor = Color.Transparent;
-            label1.Font = new Font("Microsoft Sans Serif", 15.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            label1.Location = new Point(241, 31);
-            label1.Name = "label1";
-            label1.Size = new Size(336, 25);
-            label1.TabIndex = 2;
-            label1.Text = "Gestion Clients et Commandes";
-            label1.TextAlign = ContentAlignment.TopRight;
+            clientsTitle.AutoSize = true;
+            clientsTitle.BackColor = Color.Transparent;
+            clientsTitle.Font = new Font("Montserrat", 21.7499962F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            clientsTitle.Location = new Point(322, 29);
+            clientsTitle.Name = "clientsTitle";
+            clientsTitle.Size = new Size(148, 45);
+            clientsTitle.TabIndex = 2;
+            clientsTitle.Text = "CLIENTS";
+            clientsTitle.TextAlign = ContentAlignment.TopRight;
             // 
             // Form1
             // 
@@ -157,6 +322,18 @@
         private Label title;
         private Panel Clients;
         private DataGridView dgvClients;
-        private Label label1;
+        private Label clientsTitle;
+        private Label chercheLabel;
+        private TextBox rechercheInput;
+        private Button modifyClientButton;
+        private Button DeleteClientButton;
+        private Label addClient;
+        private Label nameLabel;
+        private TextBox nameInput;
+        private Button addClientButton;
+        private Label phoneLabel;
+        private TextBox phoneInput;
+        private Label emailLabel;
+        private TextBox emailInput;
     }
 }
