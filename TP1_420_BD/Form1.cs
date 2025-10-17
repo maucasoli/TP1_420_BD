@@ -1,7 +1,5 @@
 ﻿using System.Data;
-using System.Drawing;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using DotNetEnv;
 using Microsoft.Data.SqlClient;
 using TP1_420_BD.Models;
@@ -72,6 +70,13 @@ namespace TP1_420_BD
                 adapter.Fill(dataSet, "Clients");
 
                 dgvClients.DataSource = dataSet.Tables["Clients"];
+                if (dgvClients.Columns["idClient"] != null)
+                {
+                    dgvClients.Columns["idClient"].Visible = false;
+                }
+                dgvClients.Columns["Name"].HeaderCell.Style.Font = new Font(dgvClients.Font, FontStyle.Bold);
+                dgvClients.Columns["Email"].HeaderCell.Style.Font = new Font(dgvClients.Font, FontStyle.Bold);
+                dgvClients.Columns["Phone"].HeaderCell.Style.Font = new Font(dgvClients.Font, FontStyle.Bold);
             }
         }
 

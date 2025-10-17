@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             home = new Panel();
             title = new Label();
             clientsButton = new Button();
@@ -56,7 +57,6 @@
             clients.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvClients).BeginInit();
             SuspendLayout();
-            deleteCommandButton.Click += deleteCommandButton_Click;
             // 
             // home
             // 
@@ -64,7 +64,7 @@
             home.Controls.Add(title);
             home.Controls.Add(clientsButton);
             home.Controls.Add(commandesButton);
-            home.Location = new Point(-1, -1);
+            home.Location = new Point(0, 0);
             home.Name = "home";
             home.Size = new Size(801, 453);
             home.TabIndex = 0;
@@ -200,6 +200,7 @@
             deleteCommandButton.TabIndex = 7;
             deleteCommandButton.Text = "Supprimer";
             deleteCommandButton.UseVisualStyleBackColor = false;
+            deleteCommandButton.Click += deleteCommandButton_Click;
             // 
             // rechercheCommandesInput
             // 
@@ -222,6 +223,8 @@
             // 
             // commandsGridView
             // 
+            commandsGridView.AllowUserToAddRows = false;
+            commandsGridView.AllowUserToDeleteRows = false;
             commandsGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             commandsGridView.BackgroundColor = Color.White;
             commandsGridView.BorderStyle = BorderStyle.None;
@@ -335,7 +338,6 @@
             rechercheClientsInput.Size = new Size(164, 23);
             rechercheClientsInput.TabIndex = 5;
             rechercheClientsInput.TextChanged += rechercheClientsInput_TextChanged;
-
             // 
             // rechercheClientsLabel
             // 
@@ -351,12 +353,22 @@
             // 
             // dgvClients
             // 
+            dgvClients.AllowUserToAddRows = false;
+            dgvClients.AllowUserToDeleteRows = false;
             dgvClients.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvClients.BackgroundColor = Color.White;
             dgvClients.BorderStyle = BorderStyle.None;
             dgvClients.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvClients.Location = new Point(266, 152);
             dgvClients.Name = "dgvClients";
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Montserrat", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.ButtonFace;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.ControlDarkDark;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvClients.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvClients.Size = new Size(493, 239);
             dgvClients.TabIndex = 3;
             dgvClients.CellClick += dgvClients_CellClick;
