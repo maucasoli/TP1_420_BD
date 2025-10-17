@@ -56,7 +56,6 @@
             clients.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvClients).BeginInit();
             SuspendLayout();
-            deleteCommandButton.Click += deleteCommandButton_Click;
             // 
             // home
             // 
@@ -164,6 +163,7 @@
             addCommandButton.TabIndex = 15;
             addCommandButton.Text = "Ajouter";
             addCommandButton.UseVisualStyleBackColor = false;
+            addCommandButton.Click += addCommandButton_Click;
             // 
             // modifyCommandButton
             // 
@@ -200,6 +200,7 @@
             deleteCommandButton.TabIndex = 7;
             deleteCommandButton.Text = "Supprimer";
             deleteCommandButton.UseVisualStyleBackColor = false;
+            deleteCommandButton.Click += deleteCommandButton_Click;
             // 
             // rechercheCommandesInput
             // 

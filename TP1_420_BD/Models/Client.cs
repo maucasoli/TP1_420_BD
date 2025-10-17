@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 
 namespace TP1_420_BD.Models
 {
@@ -29,6 +31,28 @@ namespace TP1_420_BD.Models
             Email = email;
             Phone = phone;
         }
-    }
 
+        public static Dictionary<int, string> GetClients(string conStr)
+        {
+            var clients = new Dictionary<int, string>();
+
+            using(SqlConnection con = new SqlConnection(conStr))
+            {
+                con.Open();
+                string query = "SELECT idClient, Name FROM Clients";
+
+                using(SqlCommand cmd = new SqlCommand(query, con))
+                using(SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int id = reader.GetInt32(0);
+                        string name = reader.GetString(1);
+                        clients.Add(id, name);
+                    }
+                }
+            }
+            return clients;
+        }
+    }
 }

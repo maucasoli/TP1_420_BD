@@ -312,5 +312,113 @@ namespace TP1_420_BD
                 MessageBox.Show("Please select a row to delete.");
             }
         }
+        private void addCommandButton_Click(object sender, EventArgs e)
+        {
+            ShowAddCommandPopup();
+        }
+
+        private void ShowAddCommandPopup()
+        {
+            var popup = new Form();
+            popup.Text = "Add Command";
+            popup.Size = new Size(450, 250);
+            popup.FormBorderStyle = FormBorderStyle.FixedDialog;
+            popup.StartPosition = FormStartPosition.CenterParent;
+            popup.MaximizeBox = false;
+            popup.MinimizeBox = false;
+
+            // Labels
+            Label lblClient = new Label() { Text = "Client", Location = new Point(20, 20) };
+            Label lblDate = new Label() { Text = "Date", Location = new Point(20, 70) };
+            Label lblAmount = new Label() { Text = "Amount", Location = new Point(20, 120) };
+
+            ComboBox cbClients = new ComboBox()
+            {
+                Location = new Point(120, 20),
+                Width = 200,
+                DropDownStyle = ComboBoxStyle.DropDownList
+            };
+
+            //Load clients
+            var clients = Models.Client.GetClients(conStr);
+            foreach(var c in clients)
+            {
+                cbClients.Items.Add(new KeyValuePair<int, string>(c.Key, $"{c.Key} - {c.Value}"));
+            }
+
+            cbClients.DisplayMember = "Value";
+            cbClients.ValueMember = "Key";
+
+            //Date picker
+            DateTimePicker dtpDate = new DateTimePicker()
+            {
+                Location = new Point(120, 70),
+                Width = 220
+            };
+
+            //TextBox Amount
+            TextBox txtAmount = new TextBox()
+            {
+                Location = new Point(120, 120),
+                Width = 220
+            };
+
+            //Buttons
+            Button btnSave = new Button() { Text = "Save", Location = new Point(60, 180), Width = 100 };
+            Button btnCancel = new Button() { Text = "Cancel", Location = new Point(180, 180), Width = 100 };
+
+            // Add controls to popu
+            popup.Controls.Add(lblClient);
+            popup.Controls.Add(cbClients);
+            popup.Controls.Add(lblDate);
+            popup.Controls.Add(dtpDate);
+            popup.Controls.Add(lblAmount);
+            popup.Controls.Add(txtAmount);
+            popup.Controls.Add(btnSave);
+            popup.Controls.Add(btnCancel);
+
+            // Save handler
+
+            btnSave.Click += (s, e) =>
+            {
+                if (cbClients.SelectedItem == null)
+                {
+                    MessageBox.Show("Please select a client.");
+                    return;
+                }
+
+                if(!decimal.TryParse(txtAmount.Text, out decimal amount) || amount < 0)
+                {
+                    MessageBox.Show("Please enter a valid positive number for price.");
+                    return;
+                }
+
+                int selectedClientId = ((KeyValuePair<int, string>)cbClients.SelectedItem).Key;
+                DateTime selectedDate = dtpDate.Value;
+
+                try
+                {
+                    var command = new Models.Commands();
+                    command.AddCommand(selectedClientId, selectedDate, amount, conStr);
+                        MessageBox.Show("Command added.");
+                        popup.DialogResult = DialogResult.OK;
+                        popup.Close();
+
+                        //Refresh
+                        command.ReadTableCommands(commandsGridView, conStr);    
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+            };
+
+            //Cancer handler
+            btnCancel.Click += (s, e) => popup.Close();
+
+            popup.ShowDialog();
+        }
+
+
     }
 }

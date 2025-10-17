@@ -38,5 +38,23 @@ namespace TP1_420_BD.Models
             }
         }
 
+        public void AddCommand(int clientId, DateTime dateCommand, decimal amount, string conStr)
+        {
+            using (SqlConnection con = new SqlConnection(conStr))
+            {
+                con.Open();
+                string insertQuery = "INSERT INTO commandes (DateCommande, Montant, IdClient) VALUES (@DateCommande, @Montant, @IdClient)";
+
+                using (SqlCommand cmd = new SqlCommand(insertQuery, con))
+                {
+                    cmd.Parameters.AddWithValue("@IdClient", clientId);
+                    cmd.Parameters.AddWithValue("@DateCommande", dateCommand);
+                    cmd.Parameters.AddWithValue("@Montant", amount);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
     }
 }
