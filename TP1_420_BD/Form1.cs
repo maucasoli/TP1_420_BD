@@ -14,14 +14,14 @@ namespace TP1_420_BD
         string database;
         string conStr;
 
-        // global variables needed to update a client
+        private System.Windows.Forms.Timer searchTimer;
+
+        // global variables needed to update/delete a client
         private int selectedClientId = -1;
         private string selectedName = "";
         private string selectedEmail = "";
         private string selectedPhone = "";
 
-        // to avoid load on database search
-        private System.Windows.Forms.Timer searchTimer;
 
         public Form1()
         {
@@ -29,9 +29,8 @@ namespace TP1_420_BD
 
             ConfigureDatabase();
 
-            searchTimer = new System.Windows.Forms.Timer();
-            searchTimer.Interval = 300;
-            searchTimer.Tick += SearchTimer_Tick;
+            // delay for search function
+            SearchDelay();
         }
 
         private void ConfigureDatabase()
@@ -41,11 +40,11 @@ namespace TP1_420_BD
             database = Env.GetString("DATABASE");
             conStr = $"Server={server};Database={database};Trusted_Connection=True;TrustServerCertificate=True";
         }
-
-        private void SearchTimer_Tick(object sender, EventArgs e)
+        private void SearchDelay()
         {
-            searchTimer.Stop();
-            SearchClient();
+            searchTimer = new System.Windows.Forms.Timer();
+            searchTimer.Interval = 500;
+            searchTimer.Tick += SearchTimer_Tick;
         }
 
 
@@ -65,12 +64,10 @@ namespace TP1_420_BD
             using (SqlConnection con = new SqlConnection(conStr))
             {
                 con.Open();
-
                 string select = "SELECT * FROM Clients;";
                 SqlDataAdapter adapter = new SqlDataAdapter(select, con);
                 DataSet dataSet = new DataSet();
                 adapter.Fill(dataSet, "Clients");
-
                 dgvClients.DataSource = dataSet.Tables["Clients"];
             }
         }
@@ -83,8 +80,8 @@ namespace TP1_420_BD
             {
                 InsertClient(client);
                 ReadClients();
+                MessageBox.Show("Client ajouté!");
             }
-            MessageBox.Show("Client ajouté!");
         }
 
         // update client button
@@ -92,7 +89,7 @@ namespace TP1_420_BD
         {
             if (selectedClientId == -1)
             {
-                MessageBox.Show("Select a client.");
+                MessageBox.Show("Selectionner un client!");
                 return;
             }
 
@@ -121,21 +118,25 @@ namespace TP1_420_BD
         {
             if (selectedClientId == -1)
             {
-                MessageBox.Show("Select a client.");
+                MessageBox.Show("Selectionner un client!");
                 return;
             }
 
             if (selectedClientId != null)
             {
-                var confirmDelete = MessageBox.Show("Are you sure to delete this client?",
-                                     "Confirmation",
-                                     MessageBoxButtons.YesNo);
-                if (confirmDelete == DialogResult.Yes)
+                var confirmDelete = MessageBox.Show(
+                  "Vous êtes sûr ?",
+                  "Confirmer la suppression",
+                  MessageBoxButtons.OKCancel,
+                  MessageBoxIcon.Warning
+              );
+
+                if (confirmDelete == DialogResult.OK)
                 {
                     DeleteClient(selectedClientId);
                     ReadClients();
 
-                    MessageBox.Show("Client deleted!");
+                    MessageBox.Show("Client supprimé !");
 
                     selectedClientId = -1;
                     selectedName = "";
@@ -146,16 +147,13 @@ namespace TP1_420_BD
                 {
                     return;
                 }
-
-
-
             }
 
         }
 
-
         private Client? GetNewClient()
         {
+
             Form dialog = new Form
             {
                 Text = "Ajouter un Client",
@@ -190,6 +188,7 @@ namespace TP1_420_BD
 
             Label lblName = new Label() { Text = "Nom :", Top = 10, Left = 10, AutoSize = true };
             TextBox txtName = new TextBox() { Left = 110, Top = 8, Width = 200 };
+
 
             Label lblEmail = new Label() { Text = "Email :", Top = 55, Left = 10, AutoSize = true };
             TextBox txtEmail = new TextBox() { Left = 110, Top = 50, Width = 200 };
@@ -298,7 +297,6 @@ namespace TP1_420_BD
             return null;
         }
 
-
         private void InsertClient(Client cliente)
         {
             using (SqlConnection con = new SqlConnection(conStr))
@@ -328,7 +326,6 @@ namespace TP1_420_BD
                 selectedPhone = row.Cells["phone"].Value.ToString();
             }
         }
-
 
         private Client? RetrieveInfoClient(int id, string name, string email, string phone)
         {
@@ -494,11 +491,11 @@ namespace TP1_420_BD
                     }
                 }
 
-                MessageBox.Show("Client modifier!");
+                MessageBox.Show("Client modifié!");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                MessageBox.Show("Erreur: " + ex.Message);
             }
         }
 
@@ -528,6 +525,11 @@ namespace TP1_420_BD
             searchTimer.Start();
         }
 
+        private void SearchTimer_Tick(object sender, EventArgs e)
+        {
+            searchTimer.Stop();
+            SearchClient();
+        }
 
         private void SearchClient()
         {
@@ -562,7 +564,7 @@ namespace TP1_420_BD
             commandes.Visible = true;
             commandes.BringToFront();
 
-            //Appel � la classe Commandes
+            //Appel la classe Commandes
             var commandesView = new Models.Commands();
             commandesView.ReadTableCommands(commandsGridView, conStr);
         }
