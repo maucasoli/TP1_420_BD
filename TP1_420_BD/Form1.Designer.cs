@@ -56,6 +56,7 @@
             clients.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvClients).BeginInit();
             SuspendLayout();
+            deleteCommandButton.Click += deleteCommandButton_Click;
             // 
             // home
             // 
@@ -333,6 +334,8 @@
             rechercheClientsInput.Name = "rechercheClientsInput";
             rechercheClientsInput.Size = new Size(164, 23);
             rechercheClientsInput.TabIndex = 5;
+            rechercheClientsInput.TextChanged += rechercheClientsInput_TextChanged;
+
             // 
             // rechercheClientsLabel
             // 
