@@ -183,6 +183,7 @@
             modifyCommandButton.TabIndex = 6;
             modifyCommandButton.Text = "Modifier";
             modifyCommandButton.UseVisualStyleBackColor = false;
+            modifyCommandButton.Click += modifyCommandButton_Click;
             // 
             // deleteCommandButton
             // 

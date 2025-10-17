@@ -1,4 +1,6 @@
 ﻿using System.Data;
+using System.Net.Http.Headers;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using DotNetEnv;
 using Microsoft.Data.SqlClient;
@@ -719,6 +721,125 @@ namespace TP1_420_BD
             popup.ShowDialog();
         }
 
+        private void modifyCommandButton_Click(object sender, EventArgs e)
+        {
+            if(commandsGridView.SelectedRows.Count ==0)
+            {
+                MessageBox.Show("Please select a row to modify.");
+                return;
+            }
 
+            //Get selected row values
+            var selectedRow = commandsGridView.SelectedRows[0];
+
+            int commandeId = Convert.ToInt32(selectedRow.Cells["idCommande"].Value);
+            int clientId = Convert.ToInt32(selectedRow.Cells["IdClient"].Value);
+            DateTime dateCommand = Convert.ToDateTime(selectedRow.Cells["DateCommande"].Value);
+            decimal amount = Convert.ToDecimal(selectedRow.Cells["Montant"].Value);
+            string reference = Convert.ToString(selectedRow.Cells["ReferenceCommande"].Value);
+
+            ShowModifyCommandPopup(commandeId, clientId, dateCommand, amount, reference);
+        }
+
+        private void ShowModifyCommandPopup(int commandeId, int currentClientId, DateTime currentDate, decimal currentAmount, string reference)
+        {
+            var popup = new Form();
+            popup.Text = "Modifier une commande";
+            popup.Size = new Size(470, 350);
+            popup.FormBorderStyle = FormBorderStyle.FixedDialog;
+            popup.StartPosition = FormStartPosition.CenterParent;
+            popup.MaximizeBox = false;
+            popup.MinimizeBox = false;
+
+            Label lblClient = new Label() { Text = "Client", Location = new Point(40, 20) };
+            Label lblDate = new Label() { Text = "Date", Location = new Point(40, 70) };
+            Label lblAmount = new Label() { Text = "Amount", Location = new Point(40, 120) };
+
+            ComboBox cbClients = new ComboBox()
+            {
+                Location = new Point(140, 20),
+                Width = 220,
+                DropDownStyle = ComboBoxStyle.DropDownList
+            };
+
+            //Load clients
+            var clients = Models.Client.GetClients(conStr);
+            int indexToselect = -1;
+            int i = 0;
+            foreach(var c in clients)
+            {
+                var item = new KeyValuePair<int, string>(c.Key, $"{c.Key} - {c.Value}");
+                cbClients.Items.Add(item);
+                if (c.Key == currentClientId) indexToselect = i;
+                i++;
+            }
+
+            cbClients.DisplayMember = "Value";
+            cbClients.ValueMember = "Key";
+            if (indexToselect > 0) cbClients.SelectedIndex = indexToselect;
+
+            DateTimePicker dtpDate = new DateTimePicker()
+            {
+                Location = new Point(140, 70),
+                Width = 220,
+                Value = currentDate
+            };
+
+            TextBox txtAmount = new TextBox()
+            {
+                Location = new Point(140, 120),
+                Width = 220,
+                Text = currentAmount.ToString("F2")
+            };
+
+            Button btnSave = new Button() { Text = "Save", Location = new Point(60, 180), Width = 100 };
+            Button btnCancel = new Button() { Text = "Cancel", Location = new Point(180, 180), Width = 100 };
+
+            popup.Controls.Add(lblClient);
+            popup.Controls.Add(cbClients);
+            popup.Controls.Add(lblDate);
+            popup.Controls.Add(dtpDate);
+            popup.Controls.Add(lblAmount);
+            popup.Controls.Add(txtAmount);
+            popup.Controls.Add(btnSave);
+            popup.Controls.Add(btnCancel);
+
+            btnSave.Click += (s, e) =>
+            {
+                if (cbClients.SelectedItem == null)
+                {
+                    MessageBox.Show("Please select a client.");
+                    return;
+                }
+
+                if (!decimal.TryParse(txtAmount.Text, out decimal amount) || amount < 0) {
+                    MessageBox.Show("Entrez une valeure positive pour le montant.");
+                    return;
+                }
+
+                int selectedClientId = ((KeyValuePair<int, string>)cbClients.SelectedItem).Key;
+                DateTime selectedDate = dtpDate.Value;
+
+                try
+                {
+                    var commandes = new Models.Commands();
+                    commandes.UpdateCommand(commandeId, selectedClientId, selectedDate, amount, reference, conStr);
+
+                    MessageBox.Show("Commande updated.");
+                    popup.DialogResult = DialogResult.OK;
+                    popup.Close();
+
+                    // Refresh grid
+                    commandes.ReadTableCommands(commandsGridView, conStr);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+            };
+            btnCancel.Click += (s, e) => popup.Close();
+
+            popup.ShowDialog();
+        }
     }
 }
