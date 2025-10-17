@@ -365,7 +365,7 @@
             dgvClients.Name = "dgvClients";
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Montserrat", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = SystemColors.ButtonFace;
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.ControlDarkDark;
@@ -397,6 +397,7 @@
             Controls.Add(home);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Gestion Clients et Commandes";
             home.ResumeLayout(false);
             home.PerformLayout();
