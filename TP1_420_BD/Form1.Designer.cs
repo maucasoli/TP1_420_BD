@@ -48,13 +48,13 @@
             deleteClientButton = new Button();
             rechercheClientsInput = new TextBox();
             rechercheClientsLabel = new Label();
-            clientsGridView = new DataGridView();
+            dgvClients = new DataGridView();
             clientsTitle = new Label();
             home.SuspendLayout();
             commandes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)commandsGridView).BeginInit();
             clients.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)clientsGridView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvClients).BeginInit();
             SuspendLayout();
             deleteCommandButton.Click += deleteCommandButton_Click;
             // 
@@ -212,11 +212,11 @@
             // 
             rechercheCommandesLabel.AutoSize = true;
             rechercheCommandesLabel.BackColor = Color.Transparent;
-            rechercheCommandesLabel.Font = new Font("Montserrat SemiBold", 9.749999F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            rechercheCommandesLabel.Font = new Font("Microsoft Sans Serif", 9.749999F, FontStyle.Bold, GraphicsUnit.Point, 0);
             rechercheCommandesLabel.ForeColor = Color.Black;
             rechercheCommandesLabel.Location = new Point(496, 99);
             rechercheCommandesLabel.Name = "rechercheCommandesLabel";
-            rechercheCommandesLabel.Size = new Size(93, 20);
+            rechercheCommandesLabel.Size = new Size(94, 16);
             rechercheCommandesLabel.TabIndex = 4;
             rechercheCommandesLabel.Text = "Recherche : ";
             // 
@@ -235,10 +235,10 @@
             // 
             commandesTitle.AutoSize = true;
             commandesTitle.BackColor = Color.Transparent;
-            commandesTitle.Font = new Font("Montserrat", 21.7499962F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            commandesTitle.Font = new Font("Microsoft Sans Serif", 21.7499962F, FontStyle.Bold, GraphicsUnit.Point, 0);
             commandesTitle.Location = new Point(288, 28);
             commandesTitle.Name = "commandesTitle";
-            commandesTitle.Size = new Size(227, 45);
+            commandesTitle.Size = new Size(215, 33);
             commandesTitle.TabIndex = 2;
             commandesTitle.Text = "COMMANDES";
             commandesTitle.TextAlign = ContentAlignment.TopRight;
@@ -252,7 +252,7 @@
             clients.Controls.Add(deleteClientButton);
             clients.Controls.Add(rechercheClientsInput);
             clients.Controls.Add(rechercheClientsLabel);
-            clients.Controls.Add(clientsGridView);
+            clients.Controls.Add(dgvClients);
             clients.Controls.Add(clientsTitle);
             clients.Dock = DockStyle.Fill;
             clients.Location = new Point(0, 0);
@@ -288,6 +288,7 @@
             addClientButton.TabIndex = 15;
             addClientButton.Text = "Ajouter";
             addClientButton.UseVisualStyleBackColor = false;
+            addClientButton.Click += btn_add_client_Click;
             // 
             // modifyClientButton
             // 
@@ -306,6 +307,7 @@
             modifyClientButton.TabIndex = 6;
             modifyClientButton.Text = "Modifier";
             modifyClientButton.UseVisualStyleBackColor = false;
+            modifyClientButton.Click += btn_modify_client_Click;
             // 
             // deleteClientButton
             // 
@@ -324,6 +326,7 @@
             deleteClientButton.TabIndex = 7;
             deleteClientButton.Text = "Supprimer";
             deleteClientButton.UseVisualStyleBackColor = false;
+            deleteClientButton.Click += btn_delete_client_Click;
             // 
             // rechercheClientsInput
             // 
@@ -336,33 +339,34 @@
             // 
             rechercheClientsLabel.AutoSize = true;
             rechercheClientsLabel.BackColor = Color.Transparent;
-            rechercheClientsLabel.Font = new Font("Montserrat SemiBold", 9.749999F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            rechercheClientsLabel.Font = new Font("Microsoft Sans Serif", 9.749999F, FontStyle.Bold, GraphicsUnit.Point, 0);
             rechercheClientsLabel.ForeColor = Color.Black;
             rechercheClientsLabel.Location = new Point(496, 99);
             rechercheClientsLabel.Name = "rechercheClientsLabel";
-            rechercheClientsLabel.Size = new Size(93, 20);
+            rechercheClientsLabel.Size = new Size(94, 16);
             rechercheClientsLabel.TabIndex = 4;
             rechercheClientsLabel.Text = "Recherche : ";
             // 
-            // clientsGridView
+            // dgvClients
             // 
-            clientsGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            clientsGridView.BackgroundColor = Color.White;
-            clientsGridView.BorderStyle = BorderStyle.None;
-            clientsGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            clientsGridView.Location = new Point(266, 152);
-            clientsGridView.Name = "clientsGridView";
-            clientsGridView.Size = new Size(493, 239);
-            clientsGridView.TabIndex = 3;
+            dgvClients.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvClients.BackgroundColor = Color.White;
+            dgvClients.BorderStyle = BorderStyle.None;
+            dgvClients.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvClients.Location = new Point(266, 152);
+            dgvClients.Name = "dgvClients";
+            dgvClients.Size = new Size(493, 239);
+            dgvClients.TabIndex = 3;
+            dgvClients.CellClick += dgvClients_CellClick;
             // 
             // clientsTitle
             // 
             clientsTitle.AutoSize = true;
             clientsTitle.BackColor = Color.Transparent;
-            clientsTitle.Font = new Font("Montserrat", 21.7499962F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            clientsTitle.Font = new Font("Microsoft Sans Serif", 21.7499962F, FontStyle.Bold, GraphicsUnit.Point, 0);
             clientsTitle.Location = new Point(329, 28);
             clientsTitle.Name = "clientsTitle";
-            clientsTitle.Size = new Size(148, 45);
+            clientsTitle.Size = new Size(144, 33);
             clientsTitle.TabIndex = 2;
             clientsTitle.Text = "CLIENTS";
             clientsTitle.TextAlign = ContentAlignment.TopRight;
@@ -372,8 +376,8 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(commandes);
             Controls.Add(clients);
+            Controls.Add(commandes);
             Controls.Add(home);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "Form1";
@@ -385,7 +389,7 @@
             ((System.ComponentModel.ISupportInitialize)commandsGridView).EndInit();
             clients.ResumeLayout(false);
             clients.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)clientsGridView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvClients).EndInit();
             ResumeLayout(false);
         }
 
@@ -412,6 +416,6 @@
         private Label clientsTitle;
         private Button commandesReturnButton;
         private Button clientsReturnButton;
-        private DataGridView clientsGridView;
+        private DataGridView dgvClients;
     }
 }
