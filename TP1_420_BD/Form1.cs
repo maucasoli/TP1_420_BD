@@ -133,13 +133,16 @@ namespace TP1_420_BD
             if (selectedClientId != null)
             {
                 var confirmDelete = MessageBox.Show(
-                  "Vous êtes sûr ?",
+                  "Vous êtes sûr de vouloir supprimer le client?\n\n" +
+                  selectedName + "\n" +
+                  selectedEmail + "\n" +
+                  selectedPhone + "\n",
                   "Confirmer la suppression",
-                  MessageBoxButtons.OKCancel,
+                  MessageBoxButtons.YesNo,
                   MessageBoxIcon.Warning
               );
 
-                if (confirmDelete == DialogResult.OK)
+                if (confirmDelete == DialogResult.Yes)
                 {
                     DeleteClient(selectedClientId);
                     ReadClients();
@@ -643,7 +646,7 @@ namespace TP1_420_BD
 
             //Load clients
             var clients = Models.Client.GetClients(conStr);
-            foreach(var c in clients)
+            foreach (var c in clients)
             {
                 cbClients.Items.Add(new KeyValuePair<int, string>(c.Key, $"{c.Key} - {c.Value}"));
             }
@@ -689,7 +692,7 @@ namespace TP1_420_BD
                     return;
                 }
 
-                if(!decimal.TryParse(txtAmount.Text, out decimal amount) || amount < 0)
+                if (!decimal.TryParse(txtAmount.Text, out decimal amount) || amount < 0)
                 {
                     MessageBox.Show("Please enter a valid positive number for price.");
                     return;
@@ -702,12 +705,12 @@ namespace TP1_420_BD
                 {
                     var command = new Models.Commands();
                     command.AddCommand(selectedClientId, selectedDate, amount, conStr);
-                        MessageBox.Show("Command added.");
-                        popup.DialogResult = DialogResult.OK;
-                        popup.Close();
+                    MessageBox.Show("Command added.");
+                    popup.DialogResult = DialogResult.OK;
+                    popup.Close();
 
-                        //Refresh
-                        command.ReadTableCommands(commandsGridView, conStr);    
+                    //Refresh
+                    command.ReadTableCommands(commandsGridView, conStr);
                 }
                 catch (Exception ex)
                 {
@@ -723,7 +726,7 @@ namespace TP1_420_BD
 
         private void modifyCommandButton_Click(object sender, EventArgs e)
         {
-            if(commandsGridView.SelectedRows.Count ==0)
+            if (commandsGridView.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Please select a row to modify.");
                 return;
@@ -766,7 +769,7 @@ namespace TP1_420_BD
             var clients = Models.Client.GetClients(conStr);
             int indexToselect = -1;
             int i = 0;
-            foreach(var c in clients)
+            foreach (var c in clients)
             {
                 var item = new KeyValuePair<int, string>(c.Key, $"{c.Key} - {c.Value}");
                 cbClients.Items.Add(item);
@@ -812,7 +815,8 @@ namespace TP1_420_BD
                     return;
                 }
 
-                if (!decimal.TryParse(txtAmount.Text, out decimal amount) || amount < 0) {
+                if (!decimal.TryParse(txtAmount.Text, out decimal amount) || amount < 0)
+                {
                     MessageBox.Show("Entrez une valeure positive pour le montant.");
                     return;
                 }
