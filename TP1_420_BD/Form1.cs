@@ -74,6 +74,7 @@ namespace TP1_420_BD
                 dgvClients.Columns["Name"].HeaderCell.Style.Font = new Font(dgvClients.Font, FontStyle.Bold);
                 dgvClients.Columns["Email"].HeaderCell.Style.Font = new Font(dgvClients.Font, FontStyle.Bold);
                 dgvClients.Columns["Phone"].HeaderCell.Style.Font = new Font(dgvClients.Font, FontStyle.Bold);
+                dgvClients.ClearSelection();
             }
         }
 
