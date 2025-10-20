@@ -39,7 +39,7 @@ namespace TP1_420_BD.Models
             using(SqlConnection con = new SqlConnection(conStr))
             {
                 con.Open();
-                string query = "SELECT idClient, Name FROM Clients";
+                string query = "SELECT idClient, Name , email FROM Clients";
 
                 using(SqlCommand cmd = new SqlCommand(query, con))
                 using(SqlDataReader reader = cmd.ExecuteReader())
@@ -48,7 +48,8 @@ namespace TP1_420_BD.Models
                     {
                         int id = reader.GetInt32(0);
                         string name = reader.GetString(1);
-                        clients.Add(id, name);
+                        string email = reader.GetString(2);
+                        clients.Add(id, name + " [" + email + "]");
                     }
                 }
             }

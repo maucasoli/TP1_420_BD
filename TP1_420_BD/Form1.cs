@@ -139,9 +139,9 @@ namespace TP1_420_BD
             {
                 var confirmDelete = MessageBox.Show(
                   "Vous êtes sûr de vouloir supprimer le client?\n\n" +
-                  selectedName + "\n" +
-                  selectedEmail + "\n" +
-                  selectedPhone + "\n",
+                  "Nom: " + selectedName + "\n" +
+                  "Email: " + selectedEmail + "\n" +
+                  "Phone: " + selectedPhone + "\n",
                   "Confirmer la suppression",
                   MessageBoxButtons.YesNo,
                   MessageBoxIcon.Warning
@@ -350,11 +350,13 @@ namespace TP1_420_BD
                 DataGridViewRow row = dgvCommands.Rows[e.RowIndex];
 
                 selectedCommandeId = Convert.ToInt32(row.Cells["IdCommande"].Value);
-                selectedEmail = Convert.ToString(row.Cells["ClientEmail"].Value);
                 reference = Convert.ToString(row.Cells["ReferenceCommande"].Value);
                 dateCommand = Convert.ToDateTime(row.Cells["DateCommande"].Value);
                 amount = Convert.ToDecimal(row.Cells["Montant"].Value);
                 selectedEmail = row.Cells["ClientEmail"].Value.ToString();
+                selectedClientId = Convert.ToInt32(row.Cells["IdClient"].Value);
+
+
 
 
             }
@@ -600,10 +602,13 @@ namespace TP1_420_BD
 
             var commandesView = new Commands();
             commandesView.ReadTableCommands(dgvCommands, conStr);
-            if (dgvCommands.Columns["idCommande"] != null)
+            if (dgvCommands.Columns["idCommande"] != null && dgvCommands.Columns["idClient"] != null)
             {
                 dgvCommands.Columns["idCommande"].Visible = false;
+                dgvCommands.Columns["idClient"].Visible = false;
+
             }
+
             dgvCommands.Columns["ReferenceCommande"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
             dgvCommands.Columns["DateCommande"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
             dgvCommands.Columns["Montant"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
@@ -719,7 +724,7 @@ namespace TP1_420_BD
                 DropDownStyle = ComboBoxStyle.DropDownList
             };
 
-            var clients = Models.Client.GetClients(conStr);
+            var clients = Client.GetClients(conStr);
             foreach (var c in clients)
                 cbClients.Items.Add(new KeyValuePair<int, string>(c.Key, $"{c.Key} - {c.Value}"));
             cbClients.DisplayMember = "Value";
@@ -895,8 +900,10 @@ namespace TP1_420_BD
                 Text = currentAmount.ToString("F2")
             };
 
-            var clients = Models.Client.GetClients(conStr);
+            var clients = Client.GetClients(conStr);
             int indexToSelect = -1, i = 0;
+
+
             foreach (var c in clients)
             {
                 var item = new KeyValuePair<int, string>(c.Key, $"{c.Key} - {c.Value}");
@@ -907,6 +914,8 @@ namespace TP1_420_BD
 
             cbClients.DisplayMember = "Value";
             cbClients.ValueMember = "Key";
+            cbClients.SelectedValue = currentClientId;
+
             if (indexToSelect >= 0) cbClients.SelectedIndex = indexToSelect;
 
             panel.Controls.AddRange(new Control[] { lblClient, cbClients, lblDate, dtpDate, lblAmount, txtAmount });

@@ -20,7 +20,8 @@ namespace TP1_420_BD.Models
                 c.ReferenceCommande,
                 c.DateCommande,
                 c.Montant,
-                cl.Email AS ClientEmail
+                cl.Email AS ClientEmail,
+                cl.IdClient
             FROM Commandes c
             INNER JOIN Clients cl ON c.IdClient = cl.IdClient
             ORDER BY c.IdCommande DESC;
@@ -29,6 +30,7 @@ namespace TP1_420_BD.Models
                 SqlDataAdapter da = new SqlDataAdapter(query, con);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
+                
 
                 dgv.DataSource = dt;
             }
