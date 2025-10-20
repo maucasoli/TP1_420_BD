@@ -350,6 +350,7 @@ namespace TP1_420_BD
                 DataGridViewRow row = dgvCommands.Rows[e.RowIndex];
 
                 selectedCommandeId = Convert.ToInt32(row.Cells["IdCommande"].Value);
+                selectedEmail = Convert.ToString(row.Cells["ClientEmail"].Value);
                 reference = Convert.ToString(row.Cells["ReferenceCommande"].Value);
                 dateCommand = Convert.ToDateTime(row.Cells["DateCommande"].Value);
                 amount = Convert.ToDecimal(row.Cells["Montant"].Value);
@@ -544,7 +545,6 @@ namespace TP1_420_BD
                     SqlCommand updateCmd = new SqlCommand(updateSql, con);
                     updateCmd.Parameters.AddWithValue("@Id", selectedClientId);
                     var lines = updateCmd.ExecuteNonQuery();
-                    ReadClients();
                 }
             }
             catch (Exception ex)
