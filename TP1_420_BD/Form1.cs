@@ -344,7 +344,7 @@ namespace TP1_420_BD
         {
             if (e.RowIndex >= 0) // 0 = header
             {
-                DataGridViewRow row = dvgCommands.Rows[e.RowIndex];
+                DataGridViewRow row = dgvCommands.Rows[e.RowIndex];
 
                 selectedCommandeId = Convert.ToInt32(row.Cells["IdCommande"].Value);
             }
@@ -589,7 +589,16 @@ namespace TP1_420_BD
 
             //Appel la classe Commandes
             var commandesView = new Commands();
-            commandesView.ReadTableCommands(dvgCommands, conStr);
+            commandesView.ReadTableCommands(dgvCommands, conStr);
+            if (dgvCommands.Columns["idCommande"] != null)
+            {
+                dgvCommands.Columns["idCommande"].Visible = false;
+            }
+            dgvCommands.Columns["ReferenceCommande"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
+            dgvCommands.Columns["DateCommande"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
+            dgvCommands.Columns["Montant"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
+            dgvCommands.Columns["IdClient"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
+            dgvCommands.ClearSelection();
         }
 
         private void clientsReturnButton_Click(object sender, EventArgs e)
@@ -628,7 +637,7 @@ namespace TP1_420_BD
 
                     var command = new Commands();
                     command.DeleteCommand(selectedCommandeId, conStr);
-                    command.ReadTableCommands(dvgCommands, conStr);
+                    command.ReadTableCommands(dgvCommands, conStr);
 
 
                     //ReadCommandes();
@@ -782,7 +791,7 @@ namespace TP1_420_BD
                     popup.DialogResult = DialogResult.OK;
                     popup.Close();
 
-                    command.ReadTableCommands(dvgCommands, conStr);
+                    command.ReadTableCommands(dgvCommands, conStr);
                 }
                 catch (Exception ex)
                 {
@@ -805,7 +814,7 @@ namespace TP1_420_BD
             }
 
             //Get selected row values
-            var selectedRow = dvgCommands.SelectedRows[0];
+            var selectedRow = dgvCommands.SelectedRows[0];
 
             int commandeId = Convert.ToInt32(selectedRow.Cells["idCommande"].Value);
             int clientId = Convert.ToInt32(selectedRow.Cells["IdClient"].Value);
@@ -964,7 +973,7 @@ namespace TP1_420_BD
                     dialog.DialogResult = DialogResult.OK;
                     dialog.Close();
 
-                    commandes.ReadTableCommands(dvgCommands, conStr);
+                    commandes.ReadTableCommands(dgvCommands, conStr);
                 }
                 catch (Exception ex)
                 {
