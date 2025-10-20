@@ -40,7 +40,7 @@
             deleteCommandButton = new Button();
             rechercheCommandesInput = new TextBox();
             rechercheCommandesLabel = new Label();
-            dvgCommands = new DataGridView();
+            dgvCommands = new DataGridView();
             commandesTitle = new Label();
             clients = new Panel();
             clientsReturnButton = new Button();
@@ -53,7 +53,7 @@
             clientsTitle = new Label();
             home.SuspendLayout();
             commandes.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dvgCommands).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvCommands).BeginInit();
             clients.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvClients).BeginInit();
             SuspendLayout();
@@ -128,7 +128,7 @@
             commandes.Controls.Add(deleteCommandButton);
             commandes.Controls.Add(rechercheCommandesInput);
             commandes.Controls.Add(rechercheCommandesLabel);
-            commandes.Controls.Add(dvgCommands);
+            commandes.Controls.Add(dgvCommands);
             commandes.Controls.Add(commandesTitle);
             commandes.Dock = DockStyle.Fill;
             commandes.Location = new Point(0, 0);
@@ -223,20 +223,20 @@
             rechercheCommandesLabel.TabIndex = 4;
             rechercheCommandesLabel.Text = "Recherche : ";
             // 
-            // dvgCommands
+            // dgvCommands
             // 
-            dvgCommands.AllowUserToAddRows = false;
-            dvgCommands.AllowUserToDeleteRows = false;
-            dvgCommands.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dvgCommands.BackgroundColor = Color.White;
-            dvgCommands.BorderStyle = BorderStyle.None;
-            dvgCommands.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dvgCommands.Location = new Point(266, 152);
-            dvgCommands.Name = "dvgCommands";
-            dvgCommands.ReadOnly = true;
-            dvgCommands.Size = new Size(493, 239);
-            dvgCommands.TabIndex = 3;
-            dvgCommands.CellClick += dgvCommandes_CellClick;
+            dgvCommands.AllowUserToAddRows = false;
+            dgvCommands.AllowUserToDeleteRows = false;
+            dgvCommands.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvCommands.BackgroundColor = Color.White;
+            dgvCommands.BorderStyle = BorderStyle.None;
+            dgvCommands.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvCommands.Location = new Point(266, 152);
+            dgvCommands.Name = "dgvCommands";
+            dgvCommands.ReadOnly = true;
+            dgvCommands.Size = new Size(493, 239);
+            dgvCommands.TabIndex = 3;
+            dgvCommands.CellClick += dgvCommandes_CellClick;
             // 
             // commandesTitle
             // 
@@ -406,7 +406,7 @@
             home.PerformLayout();
             commandes.ResumeLayout(false);
             commandes.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dvgCommands).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvCommands).EndInit();
             clients.ResumeLayout(false);
             clients.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvClients).EndInit();
@@ -425,7 +425,7 @@
         private Button deleteCommandButton;
         private TextBox rechercheCommandesInput;
         private Label rechercheCommandesLabel;
-        private DataGridView dvgCommands;
+        private DataGridView dgvCommands;
         private Label commandesTitle;
         private Panel clients;
         private Button addClientButton;
