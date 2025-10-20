@@ -344,7 +344,7 @@ namespace TP1_420_BD
         {
             if (e.RowIndex >= 0) // 0 = header
             {
-                DataGridViewRow row = commandsGridView.Rows[e.RowIndex];
+                DataGridViewRow row = dvgCommands.Rows[e.RowIndex];
 
                 selectedCommandeId = Convert.ToInt32(row.Cells["IdCommande"].Value);
             }
@@ -588,8 +588,8 @@ namespace TP1_420_BD
             commandes.BringToFront();
 
             //Appel la classe Commandes
-            var commandesView = new Models.Commands();
-            commandesView.ReadTableCommands(commandsGridView, conStr);
+            var commandesView = new Commands();
+            commandesView.ReadTableCommands(dvgCommands, conStr);
         }
 
         private void clientsReturnButton_Click(object sender, EventArgs e)
@@ -626,9 +626,9 @@ namespace TP1_420_BD
 
 
 
-                    var command = new Models.Commands();
+                    var command = new Commands();
                     command.DeleteCommand(selectedCommandeId, conStr);
-                    command.ReadTableCommands(commandsGridView, conStr);
+                    command.ReadTableCommands(dvgCommands, conStr);
 
 
                     //ReadCommandes();
@@ -726,7 +726,7 @@ namespace TP1_420_BD
                 Height = 35,
                 FlatStyle = FlatStyle.Flat,
                 BackColor = Color.White,
-                ForeColor = Color.FromArgb(40, 167, 69), // Green text
+                ForeColor = Color.FromArgb(40, 167, 69),
                 Font = new Font("Segoe UI", 9, FontStyle.Bold),
                 DialogResult = DialogResult.OK
             };
@@ -743,7 +743,7 @@ namespace TP1_420_BD
                 Height = 35,
                 FlatStyle = FlatStyle.Flat,
                 BackColor = Color.White,
-                ForeColor = Color.FromArgb(220, 53, 69), // Red text
+                ForeColor = Color.FromArgb(220, 53, 69),
                 Font = new Font("Segoe UI", 9, FontStyle.Bold),
                 DialogResult = DialogResult.Cancel
             };
@@ -776,13 +776,13 @@ namespace TP1_420_BD
 
                 try
                 {
-                    var command = new Models.Commands();
+                    var command = new Commands();
                     command.AddCommand(selectedClientId, selectedDate, amount, conStr);
                     MessageBox.Show("Commande ajoutée avec succès.", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     popup.DialogResult = DialogResult.OK;
                     popup.Close();
 
-                    command.ReadTableCommands(commandsGridView, conStr);
+                    command.ReadTableCommands(dvgCommands, conStr);
                 }
                 catch (Exception ex)
                 {
@@ -805,7 +805,7 @@ namespace TP1_420_BD
             }
 
             //Get selected row values
-            var selectedRow = commandsGridView.SelectedRows[0];
+            var selectedRow = dvgCommands.SelectedRows[0];
 
             int commandeId = Convert.ToInt32(selectedRow.Cells["idCommande"].Value);
             int clientId = Convert.ToInt32(selectedRow.Cells["IdClient"].Value);
@@ -964,7 +964,7 @@ namespace TP1_420_BD
                     dialog.DialogResult = DialogResult.OK;
                     dialog.Close();
 
-                    commandes.ReadTableCommands(commandsGridView, conStr);
+                    commandes.ReadTableCommands(dvgCommands, conStr);
                 }
                 catch (Exception ex)
                 {
