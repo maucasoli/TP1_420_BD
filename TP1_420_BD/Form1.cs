@@ -624,77 +624,123 @@ namespace TP1_420_BD
 
         private void ShowAddCommandPopup()
         {
-            var popup = new Form();
-            popup.Text = "Add Command";
-            popup.Size = new Size(450, 250);
-            popup.FormBorderStyle = FormBorderStyle.FixedDialog;
-            popup.StartPosition = FormStartPosition.CenterParent;
-            popup.MaximizeBox = false;
-            popup.MinimizeBox = false;
+            Form popup = new Form
+            {
+                Text = "Ajouter une Commande",
+                Size = new Size(420, 320),
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                StartPosition = FormStartPosition.CenterParent,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                ShowIcon = false,
+                BackColor = Color.White
+            };
 
-            // Labels
-            Label lblClient = new Label() { Text = "Client", Location = new Point(20, 20) };
-            Label lblDate = new Label() { Text = "Date", Location = new Point(20, 70) };
-            Label lblAmount = new Label() { Text = "Amount", Location = new Point(20, 120) };
+            Label lblTitle = new Label()
+            {
+                Text = "Entrez les informations de la commande",
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                ForeColor = Color.FromArgb(40, 40, 40),
+                AutoSize = false,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Top,
+                Height = 40
+            };
+            popup.Controls.Add(lblTitle);
 
+            Panel panel = new Panel()
+            {
+                Dock = DockStyle.Top,
+                Height = 170,
+                Padding = new Padding(25)
+            };
+            popup.Controls.Add(panel);
+
+            Label lblClient = new Label() { Text = "Client :", Left = 10, Top = 10, AutoSize = true };
             ComboBox cbClients = new ComboBox()
             {
-                Location = new Point(120, 20),
-                Width = 200,
+                Left = 120,
+                Top = 8,
+                Width = 230,
                 DropDownStyle = ComboBoxStyle.DropDownList
             };
 
-            //Load clients
             var clients = Models.Client.GetClients(conStr);
             foreach (var c in clients)
-            {
                 cbClients.Items.Add(new KeyValuePair<int, string>(c.Key, $"{c.Key} - {c.Value}"));
-            }
-
             cbClients.DisplayMember = "Value";
             cbClients.ValueMember = "Key";
 
-            //Date picker
+            Label lblDate = new Label() { Text = "Date :", Left = 10, Top = 60, AutoSize = true };
             DateTimePicker dtpDate = new DateTimePicker()
             {
-                Location = new Point(120, 70),
-                Width = 220
+                Left = 120,
+                Top = 55,
+                Width = 230,
+                Format = DateTimePickerFormat.Short
             };
 
-            //TextBox Amount
+            Label lblAmount = new Label() { Text = "Montant :", Left = 10, Top = 110, AutoSize = true };
             TextBox txtAmount = new TextBox()
             {
-                Location = new Point(120, 120),
-                Width = 220
+                Left = 120,
+                Top = 105,
+                Width = 230
             };
 
-            //Buttons
-            Button btnSave = new Button() { Text = "Save", Location = new Point(60, 180), Width = 100 };
-            Button btnCancel = new Button() { Text = "Cancel", Location = new Point(180, 180), Width = 100 };
+            panel.Controls.AddRange(new Control[] { lblClient, cbClients, lblDate, dtpDate, lblAmount, txtAmount });
 
-            // Add controls to popu
-            popup.Controls.Add(lblClient);
-            popup.Controls.Add(cbClients);
-            popup.Controls.Add(lblDate);
-            popup.Controls.Add(dtpDate);
-            popup.Controls.Add(lblAmount);
-            popup.Controls.Add(txtAmount);
+            Button btnSave = new Button()
+            {
+                Text = "Enregistrer",
+                Left = 70,
+                Top = 220,
+                Width = 110,
+                Height = 35,
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Color.White,
+                ForeColor = Color.FromArgb(40, 167, 69), // Green text
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                DialogResult = DialogResult.OK
+            };
+            btnSave.FlatAppearance.BorderColor = Color.FromArgb(40, 167, 69);
+            btnSave.FlatAppearance.BorderSize = 1;
+            btnSave.FlatAppearance.MouseOverBackColor = Color.FromArgb(245, 255, 245);
+
+            Button btnCancel = new Button()
+            {
+                Text = "Annuler",
+                Left = 220,
+                Top = 220,
+                Width = 110,
+                Height = 35,
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Color.White,
+                ForeColor = Color.FromArgb(220, 53, 69), // Red text
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                DialogResult = DialogResult.Cancel
+            };
+            btnCancel.FlatAppearance.BorderColor = Color.FromArgb(220, 53, 69);
+            btnCancel.FlatAppearance.BorderSize = 2;
+            btnCancel.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 245, 245);
+
             popup.Controls.Add(btnSave);
             popup.Controls.Add(btnCancel);
 
-            // Save handler
+            popup.AcceptButton = btnSave;
+            popup.CancelButton = btnCancel;
 
             btnSave.Click += (s, e) =>
             {
                 if (cbClients.SelectedItem == null)
                 {
-                    MessageBox.Show("Please select a client.");
+                    MessageBox.Show("Veuillez sélectionner un client.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
                 if (!decimal.TryParse(txtAmount.Text, out decimal amount) || amount < 0)
                 {
-                    MessageBox.Show("Please enter a valid positive number for price.");
+                    MessageBox.Show("Veuillez entrer un montant valide (positif).", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -705,24 +751,23 @@ namespace TP1_420_BD
                 {
                     var command = new Models.Commands();
                     command.AddCommand(selectedClientId, selectedDate, amount, conStr);
-                    MessageBox.Show("Command added.");
+                    MessageBox.Show("Commande ajoutée avec succès.", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     popup.DialogResult = DialogResult.OK;
                     popup.Close();
 
-                    //Refresh
                     command.ReadTableCommands(commandsGridView, conStr);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error: " + ex.Message);
+                    MessageBox.Show("Erreur: " + ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             };
 
-            //Cancer handler
             btnCancel.Click += (s, e) => popup.Close();
 
             popup.ShowDialog();
         }
+
 
         private void modifyCommandButton_Click(object sender, EventArgs e)
         {
@@ -746,78 +791,137 @@ namespace TP1_420_BD
 
         private void ShowModifyCommandPopup(int commandeId, int currentClientId, DateTime currentDate, decimal currentAmount, string reference)
         {
-            var popup = new Form();
-            popup.Text = "Modifier une commande";
-            popup.Size = new Size(470, 350);
-            popup.FormBorderStyle = FormBorderStyle.FixedDialog;
-            popup.StartPosition = FormStartPosition.CenterParent;
-            popup.MaximizeBox = false;
-            popup.MinimizeBox = false;
+            Form dialog = new Form
+            {
+                Text = "Modifier une commande",
+                Size = new Size(380, 330),
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                ShowIcon = false,
+                BackColor = Color.White
+            };
 
-            Label lblClient = new Label() { Text = "Client", Location = new Point(40, 20) };
-            Label lblDate = new Label() { Text = "Date", Location = new Point(40, 70) };
-            Label lblAmount = new Label() { Text = "Amount", Location = new Point(40, 120) };
+            Label lblTitle = new Label()
+            {
+                Text = "Modifier les informations de la commande",
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                ForeColor = Color.FromArgb(40, 40, 40),
+                AutoSize = false,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Top,
+                Height = 40
+            };
+            dialog.Controls.Add(lblTitle);
 
+            Panel panel = new Panel()
+            {
+                Dock = DockStyle.Top,
+                Height = 160,
+                Padding = new Padding(20)
+            };
+            dialog.Controls.Add(panel);
+
+            Label lblClient = new Label() { Text = "Client :", Top = 10, Left = 10, AutoSize = true };
             ComboBox cbClients = new ComboBox()
             {
-                Location = new Point(140, 20),
+                Left = 110,
+                Top = 8,
                 Width = 220,
                 DropDownStyle = ComboBoxStyle.DropDownList
             };
 
-            //Load clients
+            Label lblDate = new Label() { Text = "Date :", Top = 55, Left = 10, AutoSize = true };
+            DateTimePicker dtpDate = new DateTimePicker()
+            {
+                Left = 110,
+                Top = 50,
+                Width = 220,
+                Value = currentDate
+            };
+
+            Label lblAmount = new Label() { Text = "Montant :", Top = 100, Left = 10, AutoSize = true };
+            TextBox txtAmount = new TextBox()
+            {
+                Left = 110,
+                Top = 95,
+                Width = 220,
+                Text = currentAmount.ToString("F2")
+            };
+
             var clients = Models.Client.GetClients(conStr);
-            int indexToselect = -1;
-            int i = 0;
+            int indexToSelect = -1, i = 0;
             foreach (var c in clients)
             {
                 var item = new KeyValuePair<int, string>(c.Key, $"{c.Key} - {c.Value}");
                 cbClients.Items.Add(item);
-                if (c.Key == currentClientId) indexToselect = i;
+                if (c.Key == currentClientId) indexToSelect = i;
                 i++;
             }
 
             cbClients.DisplayMember = "Value";
             cbClients.ValueMember = "Key";
-            if (indexToselect > 0) cbClients.SelectedIndex = indexToselect;
+            if (indexToSelect >= 0) cbClients.SelectedIndex = indexToSelect;
 
-            DateTimePicker dtpDate = new DateTimePicker()
+            panel.Controls.AddRange(new Control[] { lblClient, cbClients, lblDate, dtpDate, lblAmount, txtAmount });
+
+            Button btnOK = new Button()
             {
-                Location = new Point(140, 70),
-                Width = 220,
-                Value = currentDate
+                Text = "Enregistrer",
+                Left = 50,
+                Top = 220,
+                Width = 110,
+                Height = 35,
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Color.White,
+                ForeColor = Color.FromArgb(40, 167, 69),
+                Font = new Font("Segoe UI", 9, FontStyle.Bold)
             };
+            btnOK.FlatAppearance.BorderColor = Color.FromArgb(40, 167, 69);
+            btnOK.FlatAppearance.BorderSize = 1;
+            btnOK.FlatAppearance.MouseOverBackColor = Color.FromArgb(245, 255, 245);
 
-            TextBox txtAmount = new TextBox()
+            Button btnCancel = new Button()
             {
-                Location = new Point(140, 120),
-                Width = 220,
-                Text = currentAmount.ToString("F2")
+                Text = "Annuler",
+                Left = 200,
+                Top = 220,
+                Width = 110,
+                Height = 35,
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Color.White,
+                ForeColor = Color.FromArgb(220, 53, 69),
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                DialogResult = DialogResult.Cancel
             };
+            btnCancel.FlatAppearance.BorderColor = Color.FromArgb(220, 53, 69);
+            btnCancel.FlatAppearance.BorderSize = 2;
+            btnCancel.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 245, 245);
 
-            Button btnSave = new Button() { Text = "Save", Location = new Point(60, 180), Width = 100 };
-            Button btnCancel = new Button() { Text = "Cancel", Location = new Point(180, 180), Width = 100 };
+            dialog.Controls.Add(btnOK);
+            dialog.Controls.Add(btnCancel);
 
-            popup.Controls.Add(lblClient);
-            popup.Controls.Add(cbClients);
-            popup.Controls.Add(lblDate);
-            popup.Controls.Add(dtpDate);
-            popup.Controls.Add(lblAmount);
-            popup.Controls.Add(txtAmount);
-            popup.Controls.Add(btnSave);
-            popup.Controls.Add(btnCancel);
-
-            btnSave.Click += (s, e) =>
+            btnOK.Click += (s, e) =>
             {
                 if (cbClients.SelectedItem == null)
                 {
-                    MessageBox.Show("Please select a client.");
+                    MessageBox.Show("Veuillez sélectionner un client.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    cbClients.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(txtAmount.Text))
+                {
+                    MessageBox.Show("Le montant est obligatoire.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtAmount.Focus();
                     return;
                 }
 
                 if (!decimal.TryParse(txtAmount.Text, out decimal amount) || amount < 0)
                 {
-                    MessageBox.Show("Entrez une valeure positive pour le montant.");
+                    MessageBox.Show("Entrez une valeur positive pour le montant.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtAmount.Focus();
                     return;
                 }
 
@@ -826,24 +930,27 @@ namespace TP1_420_BD
 
                 try
                 {
-                    var commandes = new Models.Commands();
+                    var commandes = new Commands();
                     commandes.UpdateCommand(commandeId, selectedClientId, selectedDate, amount, reference, conStr);
 
-                    MessageBox.Show("Commande updated.");
-                    popup.DialogResult = DialogResult.OK;
-                    popup.Close();
+                    MessageBox.Show("Commande modifiée avec succès.", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    dialog.DialogResult = DialogResult.OK;
+                    dialog.Close();
 
-                    // Refresh grid
                     commandes.ReadTableCommands(commandsGridView, conStr);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error: " + ex.Message);
+                    MessageBox.Show("Erreur : " + ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             };
-            btnCancel.Click += (s, e) => popup.Close();
 
-            popup.ShowDialog();
+            dialog.AcceptButton = btnOK;
+            dialog.CancelButton = btnCancel;
+
+            dialog.ShowDialog();
         }
+
+
     }
 }
