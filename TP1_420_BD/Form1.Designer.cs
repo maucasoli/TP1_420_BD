@@ -233,6 +233,7 @@
             commandsGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             commandsGridView.Location = new Point(266, 152);
             commandsGridView.Name = "commandsGridView";
+            commandsGridView.ReadOnly = true;
             commandsGridView.Size = new Size(493, 239);
             commandsGridView.TabIndex = 3;
             // 
@@ -363,6 +364,7 @@
             dgvClients.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvClients.Location = new Point(266, 152);
             dgvClients.Name = "dgvClients";
+            dgvClients.ReadOnly = true;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Control;
             dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
