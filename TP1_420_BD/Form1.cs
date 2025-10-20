@@ -353,7 +353,7 @@ namespace TP1_420_BD
                 reference = Convert.ToString(row.Cells["ReferenceCommande"].Value);
                 dateCommand = Convert.ToDateTime(row.Cells["DateCommande"].Value);
                 amount = Convert.ToDecimal(row.Cells["Montant"].Value);
-                selectedClientId = Convert.ToInt32(row.Cells["IdClient"].Value);
+                selectedEmail = row.Cells["ClientEmail"].Value.ToString();
 
 
             }
@@ -641,7 +641,7 @@ namespace TP1_420_BD
                   "Reference: " + reference + "\n" +
                   "Date: " + dateCommand + "\n" +
                   "Montant: " + amount + "\n" +
-                  "Id Client: " + selectedClientId + "\n",
+                  "Client email: " + selectedEmail + "\n",
                   "Confirmer la suppression",
                   MessageBoxButtons.YesNo,
                   MessageBoxIcon.Warning
