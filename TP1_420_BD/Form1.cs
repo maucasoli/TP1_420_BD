@@ -417,6 +417,7 @@ namespace TP1_420_BD
                 ForeColor = Color.FromArgb(40, 167, 69),
                 Font = new Font("Segoe UI", 9, FontStyle.Bold)
             };
+
             btnOK.FlatAppearance.BorderColor = Color.FromArgb(40, 167, 69);
             btnOK.FlatAppearance.BorderSize = 1;
             btnOK.FlatAppearance.MouseOverBackColor = Color.FromArgb(245, 255, 245);
@@ -434,6 +435,7 @@ namespace TP1_420_BD
                 Font = new Font("Segoe UI", 9, FontStyle.Bold),
                 DialogResult = DialogResult.Cancel
             };
+
             btnCancel.FlatAppearance.BorderColor = Color.FromArgb(220, 53, 69);
             btnCancel.FlatAppearance.BorderSize = 1;
             btnCancel.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 245, 245);
@@ -597,7 +599,6 @@ namespace TP1_420_BD
             commandes.Visible = true;
             commandes.BringToFront();
 
-            //Appel la classe Commandes
             var commandesView = new Commands();
             commandesView.ReadTableCommands(dgvCommands, conStr);
             if (dgvCommands.Columns["idCommande"] != null)
