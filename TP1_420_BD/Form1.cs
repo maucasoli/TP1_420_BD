@@ -353,7 +353,7 @@ namespace TP1_420_BD
                 selectedClientId = Convert.ToInt32(row.Cells["IdClient"].Value);
                 dateCommand = Convert.ToDateTime(row.Cells["DateCommande"].Value);
 
-                amount = Convert.ToDecimal(row.Cells["IdCommande"].Value);
+                amount = Convert.ToDecimal(row.Cells["Montant"].Value);
                 reference = Convert.ToString(row.Cells["IdCommande"].Value);
 
 
