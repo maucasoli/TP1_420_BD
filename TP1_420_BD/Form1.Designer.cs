@@ -236,6 +236,7 @@
             commandsGridView.ReadOnly = true;
             commandsGridView.Size = new Size(493, 239);
             commandsGridView.TabIndex = 3;
+            commandsGridView.CellClick += dgvCommandes_CellClick;
             // 
             // commandesTitle
             // 
