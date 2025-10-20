@@ -607,7 +607,10 @@ namespace TP1_420_BD
             dgvCommands.Columns["ReferenceCommande"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
             dgvCommands.Columns["DateCommande"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
             dgvCommands.Columns["Montant"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
-            dgvCommands.Columns["IdClient"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
+            dgvCommands.Columns["ClientEmail"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
+
+            dgvCommands.Columns["ReferenceCommande"].HeaderText = "Reference Commande";
+            dgvCommands.Columns["ClientEmail"].HeaderText = "Client Email";
             dgvCommands.ClearSelection();
         }
 
