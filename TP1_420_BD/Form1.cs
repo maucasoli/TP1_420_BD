@@ -22,6 +22,8 @@ namespace TP1_420_BD
         private string selectedEmail = "";
         private string selectedPhone = "";
 
+        // global variables needed to update/delete an order
+        private int selectedCommandeId = -1;
 
         public Form1()
         {
@@ -338,6 +340,16 @@ namespace TP1_420_BD
             }
         }
 
+        private void dgvCommandes_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0) // 0 = header
+            {
+                DataGridViewRow row = commandsGridView.Rows[e.RowIndex];
+
+                selectedCommandeId = Convert.ToInt32(row.Cells["IdCommande"].Value);
+            }
+        }
+
         private Client? RetrieveInfoClient(int id, string name, string email, string phone)
         {
             Form dialog = new Form
@@ -594,28 +606,43 @@ namespace TP1_420_BD
 
         private void deleteCommandButton_Click(object sender, EventArgs e)
         {
-            if (commandsGridView.SelectedRows.Count > 0)
+            if (selectedCommandeId == -1)
             {
-                //get the selected row
-                DataGridViewRow selectedRow = commandsGridView.SelectedRows[0];
+                MessageBox.Show("Selectionner une commande!");
+                return;
+            }
 
-                //Extract the IdCommande
-                int idCommand = Convert.ToInt32(selectedRow.Cells["IdCommande"].Value);
+            if (selectedCommandeId != null)
+            {
+                var confirmDelete = MessageBox.Show(
+                  "Vous êtes sûr de vouloir supprimer la commande?\n\n",
+                  "Confirmer la suppression",
+                  MessageBoxButtons.YesNo,
+                  MessageBoxIcon.Warning
+              );
 
-                // Confirm with the user
-
-                var confirm = MessageBox.Show($"Delete commande #{idCommand}?", "Confirm", MessageBoxButtons.YesNo);
-                if (confirm == DialogResult.Yes)
+                if (confirmDelete == DialogResult.Yes)
                 {
+
+
+
                     var command = new Models.Commands();
-                    command.DeleteCommand(idCommand, conStr);
+                    command.DeleteCommand(selectedCommandeId, conStr);
                     command.ReadTableCommands(commandsGridView, conStr);
+
+
+                    //ReadCommandes();
+
+                    MessageBox.Show("Commande supprimé !");
+
+                    selectedCommandeId = -1;
+                }
+                else
+                {
+                    return;
                 }
             }
-            else
-            {
-                MessageBox.Show("Please select a row to delete.");
-            }
+
         }
         private void addCommandButton_Click(object sender, EventArgs e)
         {
@@ -726,9 +753,9 @@ namespace TP1_420_BD
 
         private void modifyCommandButton_Click(object sender, EventArgs e)
         {
-            if (commandsGridView.SelectedRows.Count == 0)
+            if (selectedClientId == -1)
             {
-                MessageBox.Show("Please select a row to modify.");
+                MessageBox.Show("Selectionner une commande!");
                 return;
             }
 
