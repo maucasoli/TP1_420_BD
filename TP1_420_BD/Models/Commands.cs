@@ -9,20 +9,31 @@ namespace TP1_420_BD.Models
 {
     internal class Commands
     {
-      public void ReadTableCommands(DataGridView gridView, string conStr)
+        public void ReadTableCommands(DataGridView dgv, string conStr)
         {
             using (SqlConnection con = new SqlConnection(conStr))
             {
                 con.Open();
+                string query = @"
+            SELECT 
+                c.IdCommande,
+                c.ReferenceCommande,
+                c.DateCommande,
+                c.Montant,
+                cl.Email AS ClientEmail
+            FROM Commandes c
+            INNER JOIN Clients cl ON c.IdClient = cl.IdClient
+            ORDER BY c.IdCommande DESC;
+        ";
 
-                string select = "SELECT * FROM Commandes;";
-                SqlDataAdapter adapter = new SqlDataAdapter(select, con);
-                DataSet dataSet = new DataSet();
-                adapter.Fill(dataSet, "Commandes");
+                SqlDataAdapter da = new SqlDataAdapter(query, con);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
 
-                gridView.DataSource = dataSet.Tables["Commandes"];
+                dgv.DataSource = dt;
             }
         }
+
 
         public void DeleteCommand(int id, string conStr)
         {
