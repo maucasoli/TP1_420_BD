@@ -350,11 +350,10 @@ namespace TP1_420_BD
                 DataGridViewRow row = dgvCommands.Rows[e.RowIndex];
 
                 selectedCommandeId = Convert.ToInt32(row.Cells["IdCommande"].Value);
-                selectedClientId = Convert.ToInt32(row.Cells["IdClient"].Value);
+                reference = Convert.ToString(row.Cells["ReferenceCommande"].Value);
                 dateCommand = Convert.ToDateTime(row.Cells["DateCommande"].Value);
-
                 amount = Convert.ToDecimal(row.Cells["Montant"].Value);
-                reference = Convert.ToString(row.Cells["IdCommande"].Value);
+                selectedClientId = Convert.ToInt32(row.Cells["IdClient"].Value);
 
 
             }
@@ -635,11 +634,16 @@ namespace TP1_420_BD
             if (selectedCommandeId != null)
             {
                 var confirmDelete = MessageBox.Show(
-                  "Vous êtes sûr de vouloir supprimer la commande?\n\n",
+                  "Vous êtes sûr de vouloir supprimer la commande?\n\n" +
+                  "Reference: " + reference + "\n" +
+                  "Date: " + dateCommand + "\n" +
+                  "Montant: " + amount + "\n" +
+                  "Id Client: " + selectedClientId + "\n",
                   "Confirmer la suppression",
                   MessageBoxButtons.YesNo,
                   MessageBoxIcon.Warning
               );
+
 
                 if (confirmDelete == DialogResult.Yes)
                 {
