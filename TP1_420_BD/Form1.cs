@@ -24,6 +24,9 @@ namespace TP1_420_BD
 
         // global variables needed to update/delete an order
         private int selectedCommandeId = -1;
+        private DateTime dateCommand = DateTime.MinValue;
+        private decimal amount = -1;
+        private string reference = "";
 
         public Form1()
         {
@@ -347,6 +350,13 @@ namespace TP1_420_BD
                 DataGridViewRow row = commandsGridView.Rows[e.RowIndex];
 
                 selectedCommandeId = Convert.ToInt32(row.Cells["IdCommande"].Value);
+                selectedClientId = Convert.ToInt32(row.Cells["IdClient"].Value);
+                dateCommand = Convert.ToDateTime(row.Cells["DateCommande"].Value);
+
+                amount = Convert.ToDecimal(row.Cells["IdCommande"].Value);
+                reference = Convert.ToString(row.Cells["IdCommande"].Value);
+
+
             }
         }
 
@@ -753,22 +763,14 @@ namespace TP1_420_BD
 
         private void modifyCommandButton_Click(object sender, EventArgs e)
         {
-            if (selectedClientId == -1)
+            if (selectedCommandeId == -1)
             {
                 MessageBox.Show("Selectionner une commande!");
                 return;
             }
 
-            //Get selected row values
-            var selectedRow = commandsGridView.SelectedRows[0];
 
-            int commandeId = Convert.ToInt32(selectedRow.Cells["idCommande"].Value);
-            int clientId = Convert.ToInt32(selectedRow.Cells["IdClient"].Value);
-            DateTime dateCommand = Convert.ToDateTime(selectedRow.Cells["DateCommande"].Value);
-            decimal amount = Convert.ToDecimal(selectedRow.Cells["Montant"].Value);
-            string reference = Convert.ToString(selectedRow.Cells["ReferenceCommande"].Value);
-
-            ShowModifyCommandPopup(commandeId, clientId, dateCommand, amount, reference);
+            ShowModifyCommandPopup(selectedCommandeId, selectedClientId, dateCommand, amount, reference);
         }
 
         private void ShowModifyCommandPopup(int commandeId, int currentClientId, DateTime currentDate, decimal currentAmount, string reference)
