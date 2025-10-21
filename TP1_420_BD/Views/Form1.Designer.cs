@@ -210,6 +210,7 @@
             rechercheCommandesInput.Name = "rechercheCommandesInput";
             rechercheCommandesInput.Size = new Size(164, 23);
             rechercheCommandesInput.TabIndex = 5;
+            rechercheCommandesInput.TextChanged += (s, e) => SearchCommandes();
             // 
             // rechercheCommandesLabel
             // 

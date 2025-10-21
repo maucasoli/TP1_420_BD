@@ -30,6 +30,7 @@ namespace TP1_420_BD
 
         private System.Windows.Forms.Timer searchTimer;
         private readonly ClientService _clientService;
+        private readonly CommandService _commandService;
 
         public Form1()
         {
@@ -41,6 +42,7 @@ namespace TP1_420_BD
             SearchDelay();
 
             _clientService = new ClientService(conStr);
+            _commandService = new CommandService(conStr);
             ReadClients();
         }
 
@@ -96,16 +98,33 @@ namespace TP1_420_BD
             dgvClients.DataSource = _clientService.GetClients();
             SetupClientDgv();
         }
+
         // format table clients
         private void SetupClientDgv()
         {
-            if (dgvClients.Columns["idClient"] != null)
+            foreach (DataGridViewColumn col in dgvClients.Columns)
             {
-                dgvClients.Columns["idClient"].Visible = false;
+                Console.WriteLine(col.Name); // ou Debug.WriteLine(col.Name);
             }
-            dgvClients.Columns["Name"].HeaderCell.Style.Font = new Font(dgvClients.Font, FontStyle.Bold);
-            dgvClients.Columns["Email"].HeaderCell.Style.Font = new Font(dgvClients.Font, FontStyle.Bold);
-            dgvClients.Columns["Phone"].HeaderCell.Style.Font = new Font(dgvClients.Font, FontStyle.Bold);
+            Console.WriteLine($"Column count: {dgvClients.Columns.Count}");
+
+            if (dgvClients.Columns["IdClient"] != null)
+            {
+                dgvClients.Columns["IdClient"].Visible = false;
+            }
+
+            if (dgvClients.Columns["IdClient"] != null)
+                dgvClients.Columns["IdClient"].Visible = false;
+
+            if (dgvClients.Columns["Name"] != null)
+                dgvClients.Columns["Name"].HeaderCell.Style.Font = new Font(dgvClients.Font, FontStyle.Bold);
+
+            if (dgvClients.Columns["Email"] != null)
+                dgvClients.Columns["Email"].HeaderCell.Style.Font = new Font(dgvClients.Font, FontStyle.Bold);
+
+            if (dgvClients.Columns["Phone"] != null)
+                dgvClients.Columns["Phone"].HeaderCell.Style.Font = new Font(dgvClients.Font, FontStyle.Bold);
+
             dgvClients.ClearSelection();
         }
         private void CreateClient(Client client)
@@ -930,5 +949,12 @@ namespace TP1_420_BD
             dialog.ShowDialog();
         }
 
+        private void SearchCommandes()
+        {
+            string search = rechercheCommandesInput.Text.Trim();
+            var result = _commandService.SearchCommandes(search);
+            dgvCommands.DataSource = result;
+            dgvCommands.ClearSelection();
+        }
     }
 }
