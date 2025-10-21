@@ -44,6 +44,7 @@ namespace TP1_420_BD
             _clientService = new ClientService(conStr);
             _commandService = new CommandService(conStr);
             ReadClients();
+            dgvCommands.DataSource = _commandService.GetAllCommandes();
         }
 
         // button clients on the home panel
@@ -536,6 +537,11 @@ namespace TP1_420_BD
             dgvClients.DataSource = _clientService.SearchClient(searchString);
             dgvClients.ClearSelection();
         }
+        private void clientsReturnButton_Click(object sender, EventArgs e)
+        {
+            home.Visible = true;
+            clients.Visible = false;
+        }
 
 
 
@@ -546,29 +552,22 @@ namespace TP1_420_BD
             commandes.Visible = true;
             commandes.BringToFront();
 
-            var commandesView = new Commands();
-            commandesView.ReadTableCommands(dgvCommands, conStr);
-            if (dgvCommands.Columns["idCommande"] != null && dgvCommands.Columns["idClient"] != null)
-            {
-                dgvCommands.Columns["idCommande"].Visible = false;
-                dgvCommands.Columns["idClient"].Visible = false;
+            dgvCommands.DataSource = _commandService.GetAllCommandes();
 
-            }
+            if (dgvCommands.Columns["idCommande"] != null)
+                dgvCommands.Columns["idCommande"].Visible = false;
+
+            if (dgvCommands.Columns["idClient"] != null)
+                dgvCommands.Columns["idClient"].Visible = false;
 
             dgvCommands.Columns["ReferenceCommande"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
             dgvCommands.Columns["DateCommande"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
             dgvCommands.Columns["Montant"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
             dgvCommands.Columns["ClientEmail"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
 
-            dgvCommands.Columns["ReferenceCommande"].HeaderText = "Reference Commande";
-            dgvCommands.Columns["ClientEmail"].HeaderText = "Client Email";
+            dgvCommands.Columns["ReferenceCommande"].HeaderText = "Référence Commande";
+            dgvCommands.Columns["ClientEmail"].HeaderText = "Email du Client";
             dgvCommands.ClearSelection();
-        }
-
-        private void clientsReturnButton_Click(object sender, EventArgs e)
-        {
-            home.Visible = true;
-            clients.Visible = false;
         }
 
         private void commandesReturnButton_Click(object sender, EventArgs e)
@@ -600,16 +599,10 @@ namespace TP1_420_BD
 
                 if (confirmDelete == DialogResult.Yes)
                 {
-
-
-
-                    var command = new Commands();
-                    command.DeleteCommand(selectedCommandeId, conStr);
-                    command.ReadTableCommands(dgvCommands, conStr);
-
+                    _commandService.DeleteCommand(selectedCommandeId);
+                    dgvCommands.DataSource = _commandService.GetAllCommandes();
 
                     //ReadCommandes();
-
                     MessageBox.Show("Commande supprimée avec succès!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     selectedCommandeId = -1;
@@ -754,13 +747,19 @@ namespace TP1_420_BD
 
                 try
                 {
-                    var command = new Commands();
-                    command.AddCommand(selectedClientId, selectedDate, amount, conStr);
+                    var newCommand = new Commande
+                    {
+                        IdClient = selectedClientId,
+                        DateCommande = selectedDate,
+                        Montant = amount
+                    };
+                    _commandService.CreateCommand(newCommand);
                     MessageBox.Show("Commande ajoutée avec succès!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     popup.DialogResult = DialogResult.OK;
                     popup.Close();
 
-                    command.ReadTableCommands(dgvCommands, conStr);
+
+                    dgvCommands.DataSource = _commandService.GetAllCommandes();
                 }
                 catch (Exception ex)
                 {
@@ -928,15 +927,27 @@ namespace TP1_420_BD
 
                 try
                 {
-                    var commandes = new Commands();
-                    commandes.UpdateCommand(commandeId, selectedClientId, selectedDate, amount, reference, conStr);
+                    var updatedCommand = new Commande
+                    {
+                        IdCommande = commandeId,
+                        IdClient = selectedClientId,
+                        DateCommande = selectedDate,
+                        Montant = amount,
+                        ReferenceCommande = reference
+                    };
+                    _commandService.UpdateCommand(updatedCommand);
+                    dgvCommands.DataSource = _commandService.GetAllCommandes();
+
 
                     MessageBox.Show("Commande modifiée avec succès!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     dialog.DialogResult = DialogResult.OK;
                     dialog.Close();
 
-                    commandes.ReadTableCommands(dgvCommands, conStr);
+                    dgvCommands.DataSource = _commandService.GetAllCommandes();
                 }
+
+
+
                 catch (Exception ex)
                 {
                     MessageBox.Show("Erreur : " + ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
