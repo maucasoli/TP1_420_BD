@@ -5,16 +5,16 @@ using System.Text.RegularExpressions;
 using DotNetEnv;
 using Microsoft.Data.SqlClient;
 using TP1_420_BD.Models;
+using TP1_420_BD.Services;
 
 namespace TP1_420_BD
 {
+    // UI
     public partial class Form1 : Form
     {
-        string server;
-        string database;
-        string conStr;
-
-        private System.Windows.Forms.Timer searchTimer;
+        private string server;
+        private string database;
+        private string conStr;
 
         // global variables needed to update/delete a client
         private int selectedClientId = -1;
@@ -28,31 +28,21 @@ namespace TP1_420_BD
         private decimal amount = -1;
         private string reference = "";
 
+        private System.Windows.Forms.Timer searchTimer;
+        private readonly ClientService _clientService;
+
         public Form1()
         {
             InitializeComponent();
 
-            ConfigureDatabase();
+            conStr = ConfigureDatabase();
 
             // delay for search function
             SearchDelay();
-        }
 
-        private void ConfigureDatabase()
-        {
-            Env.Load();
-            server = Env.GetString("SERVER");
-            database = Env.GetString("DATABASE");
-            conStr = $"Server={server};Database={database};Trusted_Connection=True;TrustServerCertificate=True";
+            _clientService = new ClientService(conStr);
+            ReadClients();
         }
-
-        private void SearchDelay()
-        {
-            searchTimer = new System.Windows.Forms.Timer();
-            searchTimer.Interval = 500;
-            searchTimer.Tick += SearchTimer_Tick;
-        }
-
 
         // button clients on the home panel
         private void clientsButton_Click(object sender, EventArgs e)
@@ -60,115 +50,91 @@ namespace TP1_420_BD
             home.Visible = false;
             clients.Visible = true;
             clients.BringToFront();
-
-            ReadClients();
         }
 
-        // read table clients
-        private void ReadClients()
+        private String ConfigureDatabase()
         {
-            using (SqlConnection con = new SqlConnection(conStr))
+            Env.Load();
+            server = Env.GetString("SERVER");
+            database = Env.GetString("DATABASE");
+            conStr = $"Server={server};Database={database};Trusted_Connection=True;TrustServerCertificate=True";
+            return conStr;
+        }
+
+
+        // equivalent to eventListener
+        private void dgvClients_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0) // 0 = header
             {
-                con.Open();
-                string select = "SELECT * FROM Clients;";
-                SqlDataAdapter adapter = new SqlDataAdapter(select, con);
-                DataSet dataSet = new DataSet();
-                adapter.Fill(dataSet, "Clients");
-                dgvClients.DataSource = dataSet.Tables["Clients"];
-                if (dgvClients.Columns["idClient"] != null)
-                {
-                    dgvClients.Columns["idClient"].Visible = false;
-                }
-                dgvClients.Columns["Name"].HeaderCell.Style.Font = new Font(dgvClients.Font, FontStyle.Bold);
-                dgvClients.Columns["Email"].HeaderCell.Style.Font = new Font(dgvClients.Font, FontStyle.Bold);
-                dgvClients.Columns["Phone"].HeaderCell.Style.Font = new Font(dgvClients.Font, FontStyle.Bold);
-                dgvClients.ClearSelection();
+                DataGridViewRow row = dgvClients.Rows[e.RowIndex];
+
+                selectedClientId = Convert.ToInt32(row.Cells["IdClient"].Value);
+                selectedName = row.Cells["name"].Value.ToString();
+                selectedEmail = row.Cells["email"].Value.ToString();
+                selectedPhone = row.Cells["phone"].Value.ToString();
+            }
+        }
+        private void dgvCommandes_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0) // 0 = header
+            {
+                DataGridViewRow row = dgvCommands.Rows[e.RowIndex];
+
+                selectedCommandeId = Convert.ToInt32(row.Cells["IdCommande"].Value);
+                reference = Convert.ToString(row.Cells["ReferenceCommande"].Value);
+                dateCommand = Convert.ToDateTime(row.Cells["DateCommande"].Value);
+                amount = Convert.ToDecimal(row.Cells["Montant"].Value);
+                selectedEmail = row.Cells["ClientEmail"].Value.ToString();
+                selectedClientId = Convert.ToInt32(row.Cells["IdClient"].Value);
             }
         }
 
-        // create client button
+
+        private void ReadClients()
+        {
+            dgvClients.DataSource = _clientService.GetClients();
+            SetupClientDgv();
+        }
+        // format table clients
+        private void SetupClientDgv()
+        {
+            if (dgvClients.Columns["idClient"] != null)
+            {
+                dgvClients.Columns["idClient"].Visible = false;
+            }
+            dgvClients.Columns["Name"].HeaderCell.Style.Font = new Font(dgvClients.Font, FontStyle.Bold);
+            dgvClients.Columns["Email"].HeaderCell.Style.Font = new Font(dgvClients.Font, FontStyle.Bold);
+            dgvClients.Columns["Phone"].HeaderCell.Style.Font = new Font(dgvClients.Font, FontStyle.Bold);
+            dgvClients.ClearSelection();
+        }
+        private void CreateClient(Client client)
+        {
+            _clientService.CreateClient(client);
+        }
+        private void UpdateClient(Client client)
+        {
+            _clientService.UpdateClient(client);
+        }
+        private void DeleteClient(int selectedClientId)
+        {
+            _clientService.DeleteClient(selectedClientId);
+        }
+
+
+        // button create client
         private void btn_add_client_Click(object sender, EventArgs e)
         {
             // create client object from popup information
             var client = GetNewClient();
             if (client != null)
             {
-                InsertClient(client);
+                CreateClient(client);
                 ReadClients();
                 MessageBox.Show("Client ajouté avec succès!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-
-        // update client button
-        private void btn_modify_client_Click(object sender, EventArgs e)
-        {
-            if (selectedClientId == -1)
-            {
-                MessageBox.Show("Selectionner un client!", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            var updatedClient = RetrieveInfoClient(
-                selectedClientId,
-                selectedName,
-                selectedEmail,
-                selectedPhone
-            );
-
-            if (updatedClient != null)
-            {
-                UpdateClient(updatedClient);
-                ReadClients();
-
-                selectedClientId = -1;
-                selectedName = "";
-                selectedEmail = "";
-                selectedPhone = "";
-
-            }
-        }
-
-        // delete client button
-        private void btn_delete_client_Click(object sender, EventArgs e)
-        {
-            if (selectedClientId == -1)
-            {
-                MessageBox.Show("Selectionner un client!", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            if (selectedClientId != null)
-            {
-                var confirmDelete = MessageBox.Show(
-                  "Vous êtes sûr de vouloir supprimer le client?\n\n" +
-                  "Nom: " + selectedName + "\n" +
-                  "Email: " + selectedEmail + "\n" +
-                  "Phone: " + selectedPhone + "\n",
-                  "Confirmer la suppression",
-                  MessageBoxButtons.YesNo,
-                  MessageBoxIcon.Warning
-              );
-
-                if (confirmDelete == DialogResult.Yes)
-                {
-                    DeleteClient(selectedClientId);
-                    ReadClients();
-
-                    MessageBox.Show("Client supprimé avec succès!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    selectedClientId = -1;
-                    selectedName = "";
-                    selectedEmail = "";
-                    selectedPhone = "";
-                }
-                else
-                {
-                    return;
-                }
-            }
-
-        }
-
+        // popup to enter client info (CREATE)
         private Client? GetNewClient()
         {
 
@@ -314,56 +280,35 @@ namespace TP1_420_BD
 
             return null;
         }
-
-        private void InsertClient(Client cliente)
+        // button update client
+        private void btn_modify_client_Click(object sender, EventArgs e)
         {
-            using (SqlConnection con = new SqlConnection(conStr))
+            if (selectedClientId == -1)
             {
-                con.Open();
-                string insertSql = "INSERT INTO Clients (name, email, phone) VALUES (@Name, @Email, @Phone);";
+                MessageBox.Show("Selectionner un client!", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-                using (SqlCommand cmd = new SqlCommand(insertSql, con))
-                {
-                    cmd.Parameters.AddWithValue("@Name", cliente.Name);
-                    cmd.Parameters.AddWithValue("@Email", cliente.Email);
-                    cmd.Parameters.AddWithValue("@Phone", cliente.Phone);
-                    cmd.ExecuteNonQuery();
-                }
+            var updatedClient = RetrieveInfoClient(
+                selectedClientId,
+                selectedName,
+                selectedEmail,
+                selectedPhone
+            );
+
+            if (updatedClient != null)
+            {
+                UpdateClient(updatedClient);
+                ReadClients();
+                MessageBox.Show("Client modifié avec succès!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                selectedClientId = -1;
+                selectedName = "";
+                selectedEmail = "";
+                selectedPhone = "";
             }
         }
-
-        private void dgvClients_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0) // 0 = header
-            {
-                DataGridViewRow row = dgvClients.Rows[e.RowIndex];
-
-                selectedClientId = Convert.ToInt32(row.Cells["IdClient"].Value);
-                selectedName = row.Cells["name"].Value.ToString();
-                selectedEmail = row.Cells["email"].Value.ToString();
-                selectedPhone = row.Cells["phone"].Value.ToString();
-            }
-        }
-
-        private void dgvCommandes_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0) // 0 = header
-            {
-                DataGridViewRow row = dgvCommands.Rows[e.RowIndex];
-
-                selectedCommandeId = Convert.ToInt32(row.Cells["IdCommande"].Value);
-                reference = Convert.ToString(row.Cells["ReferenceCommande"].Value);
-                dateCommand = Convert.ToDateTime(row.Cells["DateCommande"].Value);
-                amount = Convert.ToDecimal(row.Cells["Montant"].Value);
-                selectedEmail = row.Cells["ClientEmail"].Value.ToString();
-                selectedClientId = Convert.ToInt32(row.Cells["IdClient"].Value);
-
-
-
-
-            }
-        }
-
+        // popup with client info (UPDATE)
         private Client? RetrieveInfoClient(int id, string name, string email, string phone)
         {
             Form dialog = new Form
@@ -509,92 +454,73 @@ namespace TP1_420_BD
 
             return null;
         }
-
-        private void UpdateClient(Client client)
+        // button delete client
+        private void btn_delete_client_Click(object sender, EventArgs e)
         {
-            try
+            if (selectedClientId == -1)
             {
-                using (SqlConnection con = new SqlConnection(conStr))
-                {
-                    con.Open();
-                    string update = "UPDATE Clients SET name = @Name, email = @Email, phone = @Phone WHERE idClient = @Id";
-
-                    using (SqlCommand cmd = new SqlCommand(update, con))
-                    {
-                        cmd.Parameters.AddWithValue("@Id", client.IdClient);
-                        cmd.Parameters.AddWithValue("@Name", client.Name);
-                        cmd.Parameters.AddWithValue("@Email", client.Email);
-                        cmd.Parameters.AddWithValue("@Phone", client.Phone);
-
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-
-                MessageBox.Show("Client modifié avec succès!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Selectionner un client!", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
-            catch (Exception ex)
+
+            if (selectedClientId != null)
             {
-                MessageBox.Show("Erreur: " + ex.Message);
+                var confirmDelete = MessageBox.Show(
+                  "Vous êtes sûr de vouloir supprimer le client?\n\n" +
+                  "Nom: " + selectedName + "\n" +
+                  "Email: " + selectedEmail + "\n" +
+                  "Phone: " + selectedPhone + "\n",
+                  "Confirmer la suppression",
+                  MessageBoxButtons.YesNo,
+                  MessageBoxIcon.Warning
+              );
+
+                if (confirmDelete == DialogResult.Yes)
+                {
+                    DeleteClient(selectedClientId);
+                    ReadClients();
+                    MessageBox.Show("Client supprimé avec succès!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    selectedClientId = -1;
+                    selectedName = "";
+                    selectedEmail = "";
+                    selectedPhone = "";
+                }
+                else
+                {
+                    return;
+                }
             }
         }
 
-        private void DeleteClient(int selectedClientId)
-        {
-            try
-            {
-                using (SqlConnection con = new SqlConnection(conStr))
-                {
-                    con.Open();
-                    var updateSql = "DELETE FROM Clients WHERE idClient = @Id;";
-                    SqlCommand updateCmd = new SqlCommand(updateSql, con);
-                    updateCmd.Parameters.AddWithValue("@Id", selectedClientId);
-                    var lines = updateCmd.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }
 
+        // search methods
+        private void SearchDelay()
+        {
+            searchTimer = new System.Windows.Forms.Timer();
+            searchTimer.Interval = 500;
+            searchTimer.Tick += SearchTimer_Tick;
+        }
         private void rechercheClientsInput_TextChanged(object sender, EventArgs e)
         {
             searchTimer.Stop();
             searchTimer.Start();
         }
-
         private void SearchTimer_Tick(object sender, EventArgs e)
         {
             searchTimer.Stop();
             SearchClient();
         }
-
         private void SearchClient()
         {
-            try
-            {
-                using (SqlConnection con = new SqlConnection(conStr))
-                {
-                    con.Open();
-                    var select = @"SELECT idClient, name, email, phone FROM Clients 
-                                WHERE email LIKE @Domain OR name LIKE @Domain OR phone LIKE @Domain;";
-                    SqlCommand selectCmd = new SqlCommand(select, con);
-                    selectCmd.Parameters.AddWithValue("@Domain", "%" + rechercheClientsInput.Text + "%");
-                    SqlDataAdapter adapter = new SqlDataAdapter(selectCmd);
-                    DataSet dataSet = new DataSet();
-                    adapter.Fill(dataSet, "Clients");
-
-                    dgvClients.ClearSelection();
-                    dgvClients.DataSource = dataSet.Tables["Clients"];
-
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
+            String searchString = rechercheClientsInput.Text;
+            dgvClients.DataSource = _clientService.SearchClient(searchString);
+            dgvClients.ClearSelection();
         }
 
+
+
+        // COMMANDES SECTION
         private void commandesButton_Click(object sender, EventArgs e)
         {
             home.Visible = false;
@@ -828,7 +754,6 @@ namespace TP1_420_BD
             popup.ShowDialog();
         }
 
-
         private void modifyCommandButton_Click(object sender, EventArgs e)
         {
             if (selectedCommandeId == -1)
@@ -1004,7 +929,6 @@ namespace TP1_420_BD
 
             dialog.ShowDialog();
         }
-
 
     }
 }
