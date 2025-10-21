@@ -25,13 +25,11 @@ Crée une base de données SQL Server (ex: gestion_db)
 
 Mets à jour la chaîne de connexion dans ton code :
 
-string connectionString = "server=localhost;database=gestion_db;uid={username};pwd={password};";
+conStr = $"Server={server};Database={database};Trusted_Connection=True;TrustServerCertificate=True";
 
 ## ▶️ Utilisation
 
-Lance l’application depuis Visual Studio (Ctrl + F5)
-
-Connecte-toi à la base de données
+Lance l’application depuis Visual Studio
 
 Ajoute, modifie ou supprime des enregistrements via l’interface graphique
 

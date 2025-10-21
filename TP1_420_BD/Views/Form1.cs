@@ -45,6 +45,7 @@ namespace TP1_420_BD
             database = Env.GetString("DATABASE");
             conStr = $"Server={server};Database={database};Trusted_Connection=True;TrustServerCertificate=True";
         }
+
         private void SearchDelay()
         {
             searchTimer = new System.Windows.Forms.Timer();
@@ -63,7 +64,7 @@ namespace TP1_420_BD
             ReadClients();
         }
 
-        // read from table clients
+        // read table clients
         private void ReadClients()
         {
             using (SqlConnection con = new SqlConnection(conStr))
@@ -88,12 +89,13 @@ namespace TP1_420_BD
         // create client button
         private void btn_add_client_Click(object sender, EventArgs e)
         {
+            // create client object from popup information
             var client = GetNewClient();
             if (client != null)
             {
                 InsertClient(client);
                 ReadClients();
-                MessageBox.Show("Client ajouté!");
+                MessageBox.Show("Client ajouté avec succès!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -102,7 +104,7 @@ namespace TP1_420_BD
         {
             if (selectedClientId == -1)
             {
-                MessageBox.Show("Selectionner un client!");
+                MessageBox.Show("Selectionner un client!", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -131,7 +133,7 @@ namespace TP1_420_BD
         {
             if (selectedClientId == -1)
             {
-                MessageBox.Show("Selectionner un client!");
+                MessageBox.Show("Selectionner un client!", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -152,7 +154,7 @@ namespace TP1_420_BD
                     DeleteClient(selectedClientId);
                     ReadClients();
 
-                    MessageBox.Show("Client supprimé !");
+                    MessageBox.Show("Client supprimé avec succès!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     selectedClientId = -1;
                     selectedName = "";
@@ -528,7 +530,7 @@ namespace TP1_420_BD
                     }
                 }
 
-                MessageBox.Show("Client modifié!");
+                MessageBox.Show("Client modifié avec succès!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -593,7 +595,6 @@ namespace TP1_420_BD
             }
         }
 
-
         private void commandesButton_Click(object sender, EventArgs e)
         {
             home.Visible = false;
@@ -635,8 +636,7 @@ namespace TP1_420_BD
         {
             if (selectedCommandeId == -1)
             {
-                MessageBox.Show("Selectionner une commande!");
-                return;
+                MessageBox.Show("Selectionner une commande!", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error); return;
             }
 
             if (selectedCommandeId != null)
@@ -665,7 +665,7 @@ namespace TP1_420_BD
 
                     //ReadCommandes();
 
-                    MessageBox.Show("Commande supprimé !");
+                    MessageBox.Show("Commande supprimée avec succès!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     selectedCommandeId = -1;
                 }
@@ -676,6 +676,7 @@ namespace TP1_420_BD
             }
 
         }
+
         private void addCommandButton_Click(object sender, EventArgs e)
         {
             ShowAddCommandPopup();
@@ -810,7 +811,7 @@ namespace TP1_420_BD
                 {
                     var command = new Commands();
                     command.AddCommand(selectedClientId, selectedDate, amount, conStr);
-                    MessageBox.Show("Commande ajoutée avec succès.", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Commande ajoutée avec succès!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     popup.DialogResult = DialogResult.OK;
                     popup.Close();
 
@@ -832,8 +833,7 @@ namespace TP1_420_BD
         {
             if (selectedCommandeId == -1)
             {
-                MessageBox.Show("Selectionner une commande!");
-                return;
+                MessageBox.Show("Selectionner une commande!", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error); return;
             }
 
             ShowModifyCommandPopup(selectedCommandeId, selectedClientId, dateCommand, amount, reference);
@@ -987,7 +987,7 @@ namespace TP1_420_BD
                     var commandes = new Commands();
                     commandes.UpdateCommand(commandeId, selectedClientId, selectedDate, amount, reference, conStr);
 
-                    MessageBox.Show("Commande modifiée avec succès.", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Commande modifiée avec succès!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     dialog.DialogResult = DialogResult.OK;
                     dialog.Close();
 
