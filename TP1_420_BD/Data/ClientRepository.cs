@@ -119,9 +119,9 @@ namespace TP1_420_BD.Data
                 {
                     con.Open();
                     var select = @"SELECT idClient, name, email, phone FROM Clients 
-                                WHERE email LIKE @Domain OR name LIKE @Domain OR phone LIKE @Domain;";
+                                WHERE email LIKE @Search OR name LIKE @Search OR phone LIKE @Search;";
                     SqlCommand selectCmd = new SqlCommand(select, con);
-                    selectCmd.Parameters.AddWithValue("@Domain", "%" + searchString + "%");
+                    selectCmd.Parameters.AddWithValue("@Search", "%" + searchString + "%");
                     SqlDataAdapter adapter = new SqlDataAdapter(selectCmd);
                     DataSet dataSet = new DataSet();
                     adapter.Fill(dataSet, "Clients");

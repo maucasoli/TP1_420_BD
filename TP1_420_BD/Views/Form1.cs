@@ -514,7 +514,7 @@ namespace TP1_420_BD
         }
 
 
-        // search methods
+        // search methods for client (using delay not to overload db)
         private void SearchDelay()
         {
             searchTimer = new System.Windows.Forms.Timer();

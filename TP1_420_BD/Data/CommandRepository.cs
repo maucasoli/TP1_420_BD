@@ -21,11 +21,14 @@ namespace TP1_420_BD.Data
                 {
                     con.Open();
                     var select = @"
-                        SELECT IdCommande, ReferenceCommande, DateCommande, Montant, IdClient 
-                        FROM Commandes
-                        WHERE ReferenceCommande LIKE @search
-                              OR CONVERT(varchar, DateCommande, 23) LIKE @search
-                              OR CONVERT(varchar, Montant) LIKE @search;
+                        SELECT c.IdCommande, c.ReferenceCommande, c.DateCommande, c.Montant, c.IdClient,
+                               cl.Email AS ClientEmail
+                        FROM Commandes c
+                        INNER JOIN Clients cl ON c.IdClient = cl.IdClient
+                        WHERE c.ReferenceCommande LIKE @search
+                              OR CONVERT(varchar, c.DateCommande, 23) LIKE @search
+                              OR CONVERT(varchar, c.Montant) LIKE @search
+                              OR cl.Email LIKE @search;
                     ";
 
                     SqlCommand selectCmd = new SqlCommand(select, con);
