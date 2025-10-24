@@ -48,28 +48,38 @@ namespace TP1_420_BD.Data
             }
         }
 
-        public override void Create(Commande command)
+        public override bool Create(Commande command)
         {
             string reference = GenerateRandomReference();
 
-            using (SqlConnection con = new SqlConnection(_conStr))
+            try
             {
-                con.Open();
+                using (SqlConnection con = new SqlConnection(_conStr))
+                {
+                    con.Open();
 
-                string insertQuery = @"
+                    string insertQuery = @"
                     INSERT INTO Commandes (ReferenceCommande, DateCommande, Montant, IdClient)
                     VALUES (@ReferenceCommande, @DateCommande, @Montant, @IdClient)";
 
-                using (SqlCommand cmd = new SqlCommand(insertQuery, con))
-                {
-                    cmd.Parameters.AddWithValue("@ReferenceCommande", reference);
-                    cmd.Parameters.AddWithValue("@DateCommande", command.DateCommande);
-                    cmd.Parameters.AddWithValue("@Montant", command.Montant);
-                    cmd.Parameters.AddWithValue("@IdClient", command.IdClient);
+                    using (SqlCommand cmd = new SqlCommand(insertQuery, con))
+                    {
+                        cmd.Parameters.AddWithValue("@ReferenceCommande", reference);
+                        cmd.Parameters.AddWithValue("@DateCommande", command.DateCommande);
+                        cmd.Parameters.AddWithValue("@Montant", command.Montant);
+                        cmd.Parameters.AddWithValue("@IdClient", command.IdClient);
 
-                    cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery();
+                    }
                 }
+                return true;
             }
+           catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+
         }
 
         public override void Update(Commande command)

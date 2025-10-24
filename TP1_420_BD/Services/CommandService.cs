@@ -18,9 +18,9 @@ namespace TP1_420_BD.Services
             return _repo.Search(searchString);
         }
 
-        public void CreateCommand(Commande command)
+        public bool CreateCommand(Commande command)
         {
-            _repo.Create(command);
+            return _repo.Create(command);
         }
 
         public void UpdateCommand(Commande command)

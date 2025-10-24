@@ -10,7 +10,7 @@ namespace TP1_420_BD.Interfaces
     public interface IRepository<T>
     {
         DataTable? GetAll();
-        void Create(T item);
+        bool Create(T item);
         void Update(T item);
         void Delete(int id);
         DataTable? Search(String searchString);

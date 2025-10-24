@@ -43,7 +43,7 @@ namespace TP1_420_BD.Data
             }
         }
 
-        public override void Create(Client client)
+        public override bool Create(Client client)
         {
             try
             {
@@ -60,10 +60,12 @@ namespace TP1_420_BD.Data
                         cmd.ExecuteNonQuery();
                     }
                 }
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                return false;
             }
 
         }

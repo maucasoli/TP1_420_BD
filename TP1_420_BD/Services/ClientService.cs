@@ -26,9 +26,9 @@ namespace TP1_420_BD.Services
 
         }
 
-        public void CreateClient(Client client)
+        public bool CreateClient(Client client)
         {
-            _repo.Create(client);
+           return  _repo.Create(client);
         }
 
         public void UpdateClient(Client client)

@@ -153,9 +153,9 @@ namespace TP1_420_BD
 
             dgvClients.ClearSelection();
         }
-        private void CreateClient(Client client)
+        private bool CreateClient(Client client)
         {
-            _clientService.CreateClient(client);
+            return _clientService.CreateClient(client);
         }
         private void UpdateClient(Client client)
         {
@@ -174,9 +174,16 @@ namespace TP1_420_BD
             var client = GetNewClient();
             if (client != null)
             {
-                CreateClient(client);
+                bool result = CreateClient(client);
                 ReadClients();
-                MessageBox.Show("Client ajouté avec succès!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (result)
+                {
+                    MessageBox.Show("Client ajouté avec succès!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                } else
+                {
+                    MessageBox.Show("Client existe déjà!", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
             }
         }
         // popup to enter client info (CREATE)
@@ -782,7 +789,7 @@ namespace TP1_420_BD
                         DateCommande = selectedDate,
                         Montant = amount
                     };
-                    _commandService.CreateCommand(newCommand);
+                    bool result = _commandService.CreateCommand(newCommand);
                     MessageBox.Show("Commande ajoutée avec succès!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     popup.DialogResult = DialogResult.OK;
                     popup.Close();
