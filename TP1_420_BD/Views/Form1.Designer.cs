@@ -28,8 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             home = new Panel();
+            aide = new Button();
             title = new Label();
             clientsButton = new Button();
             commandesButton = new Button();
@@ -51,16 +53,22 @@
             rechercheClientsLabel = new Label();
             dgvClients = new DataGridView();
             clientsTitle = new Label();
+            help = new Panel();
+            textBoxAide = new TextBox();
+            helpReturnButton = new Button();
+            labelAide = new Label();
             home.SuspendLayout();
             commandes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvCommands).BeginInit();
             clients.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvClients).BeginInit();
+            help.SuspendLayout();
             SuspendLayout();
             // 
             // home
             // 
             home.BackgroundImage = Properties.Resources.bg_tp1;
+            home.Controls.Add(aide);
             home.Controls.Add(title);
             home.Controls.Add(clientsButton);
             home.Controls.Add(commandesButton);
@@ -68,6 +76,16 @@
             home.Name = "home";
             home.Size = new Size(801, 453);
             home.TabIndex = 0;
+            // 
+            // aide
+            // 
+            aide.Location = new Point(38, 34);
+            aide.Name = "aide";
+            aide.Size = new Size(75, 23);
+            aide.TabIndex = 3;
+            aide.Text = "Aide";
+            aide.UseVisualStyleBackColor = true;
+            aide.Click += aide_Click;
             // 
             // title
             // 
@@ -210,7 +228,6 @@
             rechercheCommandesInput.Name = "rechercheCommandesInput";
             rechercheCommandesInput.Size = new Size(164, 23);
             rechercheCommandesInput.TabIndex = 5;
-            rechercheCommandesInput.TextChanged += (s, e) => SearchCommandes();
             // 
             // rechercheCommandesLabel
             // 
@@ -367,14 +384,14 @@
             dgvClients.Location = new Point(266, 152);
             dgvClients.Name = "dgvClients";
             dgvClients.ReadOnly = true;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Control;
-            dataGridViewCellStyle2.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.ButtonFace;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.ControlDarkDark;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgvClients.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.ButtonFace;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.ControlDarkDark;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvClients.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvClients.Size = new Size(493, 239);
             dgvClients.TabIndex = 3;
             dgvClients.CellClick += dgvClients_CellClick;
@@ -391,14 +408,59 @@
             clientsTitle.Text = "CLIENTS";
             clientsTitle.TextAlign = ContentAlignment.TopRight;
             // 
+            // help
+            // 
+            help.BackgroundImage = Properties.Resources.bg_tp1;
+            help.Controls.Add(textBoxAide);
+            help.Controls.Add(helpReturnButton);
+            help.Controls.Add(labelAide);
+            help.Location = new Point(0, 0);
+            help.Name = "help";
+            help.Size = new Size(801, 453);
+            help.TabIndex = 5;
+            // 
+            // textBoxAide
+            // 
+            textBoxAide.Location = new Point(118, 96);
+            textBoxAide.Multiline = true;
+            textBoxAide.Name = "textBoxAide";
+            textBoxAide.ReadOnly = true;
+            textBoxAide.ScrollBars = ScrollBars.Vertical;
+            textBoxAide.Size = new Size(565, 318);
+            textBoxAide.TabIndex = 4;
+            textBoxAide.Text = resources.GetString("textBoxAide.Text");
+            // 
+            // helpReturnButton
+            // 
+            helpReturnButton.Location = new Point(38, 34);
+            helpReturnButton.Name = "helpReturnButton";
+            helpReturnButton.Size = new Size(75, 23);
+            helpReturnButton.TabIndex = 3;
+            helpReturnButton.Text = "<Retourner";
+            helpReturnButton.UseVisualStyleBackColor = true;
+            helpReturnButton.Click += helpReturnButton_Click;
+            // 
+            // labelAide
+            // 
+            labelAide.AutoSize = true;
+            labelAide.BackColor = Color.Transparent;
+            labelAide.Font = new Font("Microsoft Sans Serif", 15.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            labelAide.Location = new Point(192, 28);
+            labelAide.Name = "labelAide";
+            labelAide.Size = new Size(405, 25);
+            labelAide.TabIndex = 2;
+            labelAide.Text = "Aide - Gestion Clients et Commandes";
+            labelAide.TextAlign = ContentAlignment.TopRight;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(home);
+            Controls.Add(help);
             Controls.Add(commandes);
             Controls.Add(clients);
-            Controls.Add(home);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
@@ -411,6 +473,8 @@
             clients.ResumeLayout(false);
             clients.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvClients).EndInit();
+            help.ResumeLayout(false);
+            help.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -438,5 +502,10 @@
         private Button commandesReturnButton;
         private Button clientsReturnButton;
         private DataGridView dgvClients;
+        private Button aide;
+        private Panel help;
+        private Button helpReturnButton;
+        private Label labelAide;
+        private TextBox textBoxAide;
     }
 }

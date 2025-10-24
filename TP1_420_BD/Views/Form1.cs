@@ -967,5 +967,17 @@ namespace TP1_420_BD
             dgvCommands.DataSource = result;
             dgvCommands.ClearSelection();
         }
+
+        private void helpReturnButton_Click(object sender, EventArgs e)
+        {
+            help.Visible = false;
+            home.Visible = true;
+        }
+
+        private void aide_Click(object sender, EventArgs e)
+        {
+            home.Visible = false;
+            help.Visible = true;
+        }
     }
 }
