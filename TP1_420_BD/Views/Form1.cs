@@ -728,8 +728,7 @@ namespace TP1_420_BD
                 FlatStyle = FlatStyle.Flat,
                 BackColor = Color.White,
                 ForeColor = Color.FromArgb(40, 167, 69),
-                Font = new Font("Segoe UI", 9, FontStyle.Bold),
-                DialogResult = DialogResult.OK
+                Font = new Font("Segoe UI", 9, FontStyle.Bold)
             };
             btnSave.FlatAppearance.BorderColor = Color.FromArgb(40, 167, 69);
             btnSave.FlatAppearance.BorderSize = 1;
