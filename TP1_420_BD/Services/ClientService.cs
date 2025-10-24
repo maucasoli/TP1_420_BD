@@ -22,28 +22,28 @@ namespace TP1_420_BD.Services
 
         public DataTable GetClients()
         {
-            return _repo.ReadClients();
+            return _repo.GetAll();
 
         }
 
         public void CreateClient(Client client)
         {
-            _repo.CreateClient(client);
+            _repo.Create(client);
         }
 
         public void UpdateClient(Client client)
         {
-            _repo.UpdateClient(client);
+            _repo.Update(client);
         }
 
         public void DeleteClient(int id)
         {
-            _repo.DeleteClient(id);
+            _repo.Delete(id);
         }
 
         public DataTable? SearchClient(string searchString)
         {
-            return _repo.SearchClient(searchString);
+            return _repo.Search(searchString);
         }
     }
 }

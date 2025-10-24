@@ -5,12 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using TP1_420_BD.Interfaces;
 using TP1_420_BD.Models;
 
 namespace TP1_420_BD.Data
 {
     // DB access
-    internal class ClientRepository
+    internal class ClientRepository : BaseRepository<Client>
     {
         // _ for private variables
         private readonly string _conStr;
@@ -21,7 +22,7 @@ namespace TP1_420_BD.Data
         }
 
         // ? = could return null
-        public DataTable? ReadClients()
+        public override DataTable? GetAll()
         {
             try
             {
@@ -42,7 +43,7 @@ namespace TP1_420_BD.Data
             }
         }
 
-        public void CreateClient(Client client)
+        public override void Create(Client client)
         {
             try
             {
@@ -67,7 +68,7 @@ namespace TP1_420_BD.Data
 
         }
 
-        public void UpdateClient(Client client)
+        public override void Update(Client client)
         {
             try
             {
@@ -92,7 +93,7 @@ namespace TP1_420_BD.Data
             }
         }
 
-        public void DeleteClient(int id)
+        public override void Delete(int id)
         {
             try
             {
@@ -111,7 +112,7 @@ namespace TP1_420_BD.Data
             }
         }
 
-        public DataTable? SearchClient(String searchString)
+        public override DataTable? Search(String searchString)
         {
             try
             {

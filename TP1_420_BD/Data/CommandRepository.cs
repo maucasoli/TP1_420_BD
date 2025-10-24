@@ -4,7 +4,7 @@ using TP1_420_BD.Models;
 
 namespace TP1_420_BD.Data
 {
-    internal class CommandRepository
+    internal class CommandRepository : BaseRepository<Commande>
     {
         private readonly string _conStr;
 
@@ -13,7 +13,7 @@ namespace TP1_420_BD.Data
             _conStr = conStr;
         }
 
-        public DataTable? SearchCommandes(string searchString)
+        public override DataTable? Search(string searchString)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace TP1_420_BD.Data
             }
         }
 
-        public void CreateCommand(Commande command)
+        public override void Create(Commande command)
         {
             string reference = GenerateRandomReference();
 
@@ -72,7 +72,7 @@ namespace TP1_420_BD.Data
             }
         }
 
-        public void UpdateCommand(Commande command)
+        public override void Update(Commande command)
         {
             using (SqlConnection con = new SqlConnection(_conStr))
             {
@@ -99,7 +99,7 @@ namespace TP1_420_BD.Data
             }
         }
 
-        public void DeleteCommand(int idCommande)
+        public override void Delete(int idCommande)
         {
             using (SqlConnection con = new SqlConnection(_conStr))
             {
@@ -115,7 +115,7 @@ namespace TP1_420_BD.Data
             }
         }
 
-        public DataTable ReadAllCommandes()
+        public override DataTable GetAll()
         {
             using (SqlConnection con = new SqlConnection(_conStr))
             {

@@ -15,27 +15,27 @@ namespace TP1_420_BD.Services
 
         public DataTable? SearchCommandes(string searchString)
         {
-            return _repo.SearchCommandes(searchString);
+            return _repo.Search(searchString);
         }
 
         public void CreateCommand(Commande command)
         {
-            _repo.CreateCommand(command);
+            _repo.Create(command);
         }
 
         public void UpdateCommand(Commande command)
         {
-            _repo.UpdateCommand(command);
+            _repo.Update(command);
         }
 
         public void DeleteCommand(int id)
         {
-            _repo.DeleteCommand(id);
+            _repo.Delete(id);
         }
 
         public DataTable GetAllCommandes()
         {
-            return _repo.ReadAllCommandes();
+            return _repo.GetAll();
         }
     }
 }
