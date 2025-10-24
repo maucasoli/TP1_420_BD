@@ -37,7 +37,7 @@ Ajoute, modifie ou supprime des enregistrements via l’interface graphique
 
 /TP1_420_BD
 
-![Architecture du projet](docs/Architecture/png)
+![Architecture du projet](docs/Architecture.png)
 
 ## 🛠️ Technologies utilisées
 
