@@ -35,8 +35,6 @@ Ajoute, modifie ou supprime des enregistrements via l’interface graphique
 
 ## 🧩 Structure du projet
 
-/TP1_420_BD
-
 ![Architecture du projet](docs/Architecture.png)
 
 ## 🛠️ Technologies utilisées
@@ -93,15 +91,7 @@ Youssef Moinou
 
 🧑🏻‍💼 Youssef Moinou
 
-### 6️⃣ Tests de fonctionnalité
-
-🧑🏻‍💼 Jean Guyot
-
-🧑🏻‍💼 Mauricio Oliveira
-
-🧑🏻‍💼 Youssef Moinou
-
-### 7️⃣ Documentation
+### 6️⃣ Documentation
 
 🧑🏻‍💼 Jean Guyot
 
