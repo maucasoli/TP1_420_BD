@@ -161,7 +161,7 @@
             commandesReturnButton.Name = "commandesReturnButton";
             commandesReturnButton.Size = new Size(75, 23);
             commandesReturnButton.TabIndex = 17;
-            commandesReturnButton.Text = "< Retouner";
+            commandesReturnButton.Text = "<Retourner";
             commandesReturnButton.UseVisualStyleBackColor = true;
             commandesReturnButton.Click += commandesReturnButton_Click;
             // 
@@ -229,7 +229,6 @@
             rechercheCommandesInput.Size = new Size(164, 23);
             rechercheCommandesInput.TabIndex = 5;
             rechercheCommandesInput.TextChanged += rechercheCommandesInput_TextChanged;
-
             // 
             // rechercheCommandesLabel
             // 
@@ -294,7 +293,7 @@
             clientsReturnButton.Name = "clientsReturnButton";
             clientsReturnButton.Size = new Size(75, 23);
             clientsReturnButton.TabIndex = 16;
-            clientsReturnButton.Text = "< Retouner";
+            clientsReturnButton.Text = "<Retourner";
             clientsReturnButton.UseVisualStyleBackColor = true;
             clientsReturnButton.Click += clientsReturnButton_Click;
             // 
