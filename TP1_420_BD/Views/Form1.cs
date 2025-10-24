@@ -54,6 +54,31 @@ namespace TP1_420_BD
             clients.Visible = true;
             clients.BringToFront();
         }
+        // button commandes on the home panel
+        private void commandesButton_Click(object sender, EventArgs e)
+        {
+            home.Visible = false;
+            commandes.Visible = true;
+            commandes.BringToFront();
+
+            dgvCommands.DataSource = _commandService.GetAllCommandes();
+
+            if (dgvCommands.Columns["idCommande"] != null)
+                dgvCommands.Columns["idCommande"].Visible = false;
+
+            if (dgvCommands.Columns["idClient"] != null)
+                dgvCommands.Columns["idClient"].Visible = false;
+
+            dgvCommands.Columns["ReferenceCommande"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
+            dgvCommands.Columns["DateCommande"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
+            dgvCommands.Columns["Montant"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
+            dgvCommands.Columns["ClientEmail"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
+
+            dgvCommands.Columns["ReferenceCommande"].HeaderText = "Référence Commande";
+            dgvCommands.Columns["ClientEmail"].HeaderText = "Email du Client";
+            dgvCommands.ClearSelection();
+        }
+
 
         private String ConfigureDatabase()
         {
@@ -520,6 +545,7 @@ namespace TP1_420_BD
             searchTimer = new System.Windows.Forms.Timer();
             searchTimer.Interval = 500;
             searchTimer.Tick += SearchTimer_Tick;
+            searchTimer.Tick += SearchTimer2_Tick;
         }
         private void rechercheClientsInput_TextChanged(object sender, EventArgs e)
         {
@@ -537,45 +563,54 @@ namespace TP1_420_BD
             dgvClients.DataSource = _clientService.SearchClient(searchString);
             dgvClients.ClearSelection();
         }
+
+        // search methods for commandes
+        private void rechercheCommandesInput_TextChanged(object sender, EventArgs e)
+        {
+            searchTimer.Stop();
+            searchTimer.Start();
+        }
+        private void SearchTimer2_Tick(object sender, EventArgs e)
+        {
+            searchTimer.Stop();
+            SearchCommande();
+        }
+        private void SearchCommande()
+        {
+            String searchString = rechercheCommandesInput.Text;
+            dgvCommands.DataSource = _commandService.SearchCommandes(searchString);
+            dgvCommands.ClearSelection();
+        }
+
+
+        // return to home screen buttons
         private void clientsReturnButton_Click(object sender, EventArgs e)
         {
             home.Visible = true;
             clients.Visible = false;
         }
-
-
-
-        // COMMANDES SECTION
-        private void commandesButton_Click(object sender, EventArgs e)
-        {
-            home.Visible = false;
-            commandes.Visible = true;
-            commandes.BringToFront();
-
-            dgvCommands.DataSource = _commandService.GetAllCommandes();
-
-            if (dgvCommands.Columns["idCommande"] != null)
-                dgvCommands.Columns["idCommande"].Visible = false;
-
-            if (dgvCommands.Columns["idClient"] != null)
-                dgvCommands.Columns["idClient"].Visible = false;
-
-            dgvCommands.Columns["ReferenceCommande"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
-            dgvCommands.Columns["DateCommande"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
-            dgvCommands.Columns["Montant"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
-            dgvCommands.Columns["ClientEmail"].HeaderCell.Style.Font = new Font(dgvCommands.Font, FontStyle.Bold);
-
-            dgvCommands.Columns["ReferenceCommande"].HeaderText = "Référence Commande";
-            dgvCommands.Columns["ClientEmail"].HeaderText = "Email du Client";
-            dgvCommands.ClearSelection();
-        }
-
         private void commandesReturnButton_Click(object sender, EventArgs e)
         {
             home.Visible = true;
             commandes.Visible = false;
         }
 
+
+
+        // COMMANDES SECTION
+        private void addCommandButton_Click(object sender, EventArgs e)
+        {
+            ShowAddCommandPopup();
+        }
+        private void modifyCommandButton_Click(object sender, EventArgs e)
+        {
+            if (selectedCommandeId == -1)
+            {
+                MessageBox.Show("Selectionner une commande!", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error); return;
+            }
+
+            ShowModifyCommandPopup(selectedCommandeId, selectedClientId, dateCommand, amount, reference);
+        }
         private void deleteCommandButton_Click(object sender, EventArgs e)
         {
             if (selectedCommandeId == -1)
@@ -613,11 +648,6 @@ namespace TP1_420_BD
                 }
             }
 
-        }
-
-        private void addCommandButton_Click(object sender, EventArgs e)
-        {
-            ShowAddCommandPopup();
         }
 
         private void ShowAddCommandPopup()
@@ -771,17 +801,6 @@ namespace TP1_420_BD
 
             popup.ShowDialog();
         }
-
-        private void modifyCommandButton_Click(object sender, EventArgs e)
-        {
-            if (selectedCommandeId == -1)
-            {
-                MessageBox.Show("Selectionner une commande!", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error); return;
-            }
-
-            ShowModifyCommandPopup(selectedCommandeId, selectedClientId, dateCommand, amount, reference);
-        }
-
         private void ShowModifyCommandPopup(int commandeId, int currentClientId, DateTime currentDate, decimal currentAmount, string reference)
         {
             Form dialog = new Form
@@ -958,14 +977,6 @@ namespace TP1_420_BD
             dialog.CancelButton = btnCancel;
 
             dialog.ShowDialog();
-        }
-
-        private void SearchCommandes()
-        {
-            string search = rechercheCommandesInput.Text.Trim();
-            var result = _commandService.SearchCommandes(search);
-            dgvCommands.DataSource = result;
-            dgvCommands.ClearSelection();
         }
 
         private void helpReturnButton_Click(object sender, EventArgs e)
