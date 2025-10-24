@@ -228,7 +228,6 @@
             rechercheCommandesInput.Name = "rechercheCommandesInput";
             rechercheCommandesInput.Size = new Size(164, 23);
             rechercheCommandesInput.TabIndex = 5;
-            //rechercheCommandesInput.TextChanged += => SearchCommandes();
             rechercheCommandesInput.TextChanged += rechercheCommandesInput_TextChanged;
 
             // 
