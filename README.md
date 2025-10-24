@@ -1,4 +1,4 @@
-﻿# 🖥️ Gestion de Base de Données – C# Windows Forms + SQL Server
+﻿﻿# 🖥️ Gestion de Base de Données – C# Windows Forms + SQL Server
 
 Une application Windows Forms développée en **C# (.NET)** permettant de gérer des données stockées dans une base **SQL Server**.  
 Le projet inclut des fonctionnalités de connexion, d’ajout, de modification et de suppression d’enregistrements.
@@ -36,7 +36,8 @@ Ajoute, modifie ou supprime des enregistrements via l’interface graphique
 ## 🧩 Structure du projet
 
 /TP1_420_BD
-TODO
+
+![Architecture du projet](docs/Architecture/.png)
 
 ## 🛠️ Technologies utilisées
 
@@ -60,3 +61,11 @@ Mauricio Oliveira
 
 Youssef Moinou
 💻 GitHub : @derssa
+
+## 🧑🏻‍💼 Répartition des tâches
+
+🧑🏻‍💼 Jean Guyot : Dévelopement du backend lié Commandes
+
+🧑🏻‍💼 Mauricio Oliveira : Dévelopement backend Clients
+
+🧑🏻‍💼 Youssef Moinou : Dévelopement interface Graphique
