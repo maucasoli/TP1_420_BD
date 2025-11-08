@@ -99,4 +99,9 @@ Youssef Moinou
 
 🧑🏻‍💼 Youssef Moinou
  
- 
+## Images
+![alt text](https://github.com/maucasoli/TP1_420_BD/blob/main/docs/home.png "Home Screen")
+
+![alt text](https://github.com/maucasoli/TP1_420_BD/blob/main/docs/clients.png "Clients Screen")
+
+![alt text](https://github.com/maucasoli/TP1_420_BD/blob/main/docs/orders.png "Orders Screen")
