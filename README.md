@@ -4,6 +4,7 @@ Une application Windows Forms développée en **C# (.NET)** permettant de gérer
 Le projet inclut des fonctionnalités de connexion, d’ajout, de modification et de suppression d’enregistrements.
 
 ---
+![Home page](https://github.com/maucasoli/TP1_420_BD/blob/main/docs/home.png "Home page")
 
 ## 🚀 Installation
 
@@ -100,8 +101,6 @@ Youssef Moinou
 🧑🏻‍💼 Youssef Moinou
  
 ## Images
-![alt text](https://github.com/maucasoli/TP1_420_BD/blob/main/docs/home.png "Home Screen")
+![Clients page](https://github.com/maucasoli/TP1_420_BD/blob/main/docs/clients.png "Clients page")
 
-![alt text](https://github.com/maucasoli/TP1_420_BD/blob/main/docs/clients.png "Clients Screen")
-
-![alt text](https://github.com/maucasoli/TP1_420_BD/blob/main/docs/orders.png "Orders Screen")
+![Orders page](https://github.com/maucasoli/TP1_420_BD/blob/main/docs/orders.png "Orders page")
