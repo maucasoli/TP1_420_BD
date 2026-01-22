@@ -10,7 +10,7 @@ Le projet inclut des fonctionnalités de connexion, d’ajout, de modification e
 
 ### 1. Cloner le projet
 
-git clone https://github.com/maucasoli/TP1-420-DB.git
+git clone https://github.com/maucasoli/TP1-420-BD.git
 
 ### 2. Ouvrir dans Visual Studio
 
